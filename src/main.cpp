@@ -23,13 +23,9 @@ std::string get_db_filepath()
 
 int main()
 {
-    const std::string db_path = get_db_filepath();
-
-    // std::cout << db_path << std::endl; // debug
-
     try // Check database file can be accessed
     {
-        SQLite::Database db(db_path);
+        SQLite::Database db(get_db_filepath());
     }
     catch (const std::exception& e) 
     {
