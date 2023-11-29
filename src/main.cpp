@@ -4,6 +4,7 @@
 #include <utility>
 #include <chrono>
 #include <thread>
+#include <source_location>
 
 // Importing an unofficial sqlite3 library wrapper for C++
 // Source: https://github.com/SRombauts/SQLiteCpp/tree/sqlitecpp-release-3.3.1
