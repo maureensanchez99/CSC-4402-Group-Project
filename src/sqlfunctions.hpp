@@ -4,48 +4,29 @@
 std::string get_db_filepath();
 
 /// @brief TODO: Add overview text for this function here
+/// @param employee_login TODO: Add param description here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-bool check_id(std::string id)
+std::string check_id(bool employee_login, std::string id)
 {
-    bool return_val = false;
-    std::string employee_ret;
-    std::string customer_ret;
+    std::string return_val = std::string();
 
     try
     {
         SQLite::Database db(get_db_filepath());
-        employee_ret = (std::string) db.execAndGet("SELECT employee_id FROM employee WHERE employee_id = " + id);
-        customer_ret = (std::string) db.execAndGet("SELECT customer_id FROM customer WHERE customer_id = " + id);
+        if (employee_login)
+        {
+            return_val = (std::string) db.execAndGet("SELECT name_first FROM employee WHERE employee_id = " + id);
+        }
+        else
+        {
+            return_val = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + id);
+        }
     }
-    catch (const std::exception& e) {}
-    
-    if (!employee_ret.empty() || !customer_ret.empty()) 
-    {
-        return_val = true;
-    }
-    
+    catch (const std::exception& e) {} // If query fails, the ID is invalid
+
     return return_val;
 }
-
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-int check_user_type(std::string id)
-{
-    // Function not implemented yet
-    return 3; // Set value manually for testing
-}
-
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-std::string name_lookup(std::string id)
-{
-    // Function not implemented yet
-    return id; // Set value manually for testing
-}
-
 
 //menu functions//
 
