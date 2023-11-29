@@ -18,8 +18,8 @@ INSERT INTO store VALUES (2, 3, 165, 'Store Ln', NULL, 'Tampa', 'Florida', 40062
 DROP TABLE if exists 'employee';
 create table employee (
 	employee_id		varchar(8),
-  	name_last		varchar(50),
   	name_first		varchar(50),
+  	name_last		varchar(50),
   	street_number	numeric(5,0),
   	street_name		varchar(50),
   	apt_number		numeric(5,0),
@@ -112,8 +112,8 @@ INSERT INTO seed VALUEs (9, 'brocolli', 'vegetable', 'winter', '7', 'Full Shade'
 drop table if exists 'customer';
 create table customer(
   	customer_id		varchar(8),
-  	name_last		varchar(50),
   	name_first		varchar(50),
+  	name_last		varchar(50),
   	street_number	numeric(5,0),
   	street_name		varchar(50),
   	apt_number		numeric(5,0),
