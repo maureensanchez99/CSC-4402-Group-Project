@@ -3,6 +3,8 @@
 #include <string>
 #include <utility>
 
+#include "sqlite3.h" // External sqlite3 library
+
 #include "userinterface.hpp"
 #include "checksql.hpp"
 
