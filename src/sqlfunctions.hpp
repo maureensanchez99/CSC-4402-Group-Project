@@ -1,5 +1,5 @@
-#ifndef CHECKSQL_HPP
-#define CHECKSQL_HPP
+#ifndef SQLFUNCTIONS_HPP
+#define SQLFUNCTIONS_HPP
 
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here

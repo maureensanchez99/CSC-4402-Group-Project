@@ -15,7 +15,8 @@
 // Source: https://github.com/SqliteModernCpp/sqlite_modern_cpp
 #include "sqlite_modern_cpp.h"
 
-#include "checksql.hpp"
+#include "dblink.hpp"
+#include "sqlfunctions.hpp"
 #include "userinterface.hpp"
 
 int main()

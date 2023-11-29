@@ -8,8 +8,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/sqlite_modern_cpp)
 
 add_executable(project
     src/main.cpp
+    src/dblink.hpp
+    src/sqlfunctions.hpp
     src/userinterface.hpp
-    src/checksql.hpp
     external/sqlite_modern_cpp/sqlite_modern_cpp.h
 )
 
