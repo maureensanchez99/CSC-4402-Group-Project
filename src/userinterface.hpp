@@ -70,6 +70,18 @@ void word_wrapper(std::vector<std::string> words, int wrap_size = 100)
     std::cout << generate_border() << std::endl; // Printing the lower border
 }
 
+/// @brief Prompts the user for input and stores their response
+/// @return A string containing the user's input in all lowercase
+std::string get_input()
+{
+    std::string input;
+    std::cout << "> ";
+    getline(std::cin, input); // Reads input until a newline character is reached
+
+    std::transform(input.begin(), input.end(), input.begin(), ::tolower); // Convert input to all lowercase
+    return input;
+}
+
 /// \brief Sends the name of the company (as ASCII art)
 /// to the terminal, surrounded by borders
 void title_card()
@@ -86,153 +98,140 @@ void title_card()
     "                                                                      | $$                          \n"
     "                                                                      | $$                          \n"
     "                                                                      |__/                          \n";
-    std::cout << generate_border() << std::endl;
-    std::cout << ascii_title << std::endl;
-    std::cout << generate_border() << std::endl;
+    std::cout << generate_border() << std::endl << ascii_title << generate_border() << std::endl;
 }
 
 /// @brief Prompts the user to input their ID to login to the program
-/// @return An interger value representing the user's status (1, 2, 3) or exit request (-1)
-int display_login_menu()
+/// \return An std::pair containing the type of user and their ID 
+/// (or an empty pair for exiting the program)
+std::pair<int, std::string> display_login_menu()
 {
     std::string login_id;
-    char query_response;
+    int login_type;
 
-    std::cout << "Please select one of the following." << std::endl;
-    std::cout << "1] Login as a customer" << std::endl;
-    std::cout << "2] Login as an employee" << std::endl;
-    std::cout << "3] Login as an administrator" << std::endl;
-    std::cout << "4] Exit the program" << std::endl;
+    std::cout << "Welcome to the Grow Depot UI!" << std::endl
+    << "To login, enter your ID number." << std::endl
+    << "To quit, type exit." << std::endl << generate_border() << std::endl;
 
-    while (true) // Loop the selection until a valid selection is made
+    while(true) // Loop until the user inputs a valid login or quits the program
     {
-        std::cout << "> ";
-        query_response = getchar();
-
-        if (query_response == '1' || query_response == '2' || query_response == '3')
-        {
-            std::cout << "Enter your login ID: " << std::endl;
-            std::cout << "> ";
-            getline(std::cin, login_id);
-        }
-        else if (query_response == '4') 
+        std::cout << "Enter your login ID:" << std::endl;
+        login_id = get_input();
+        
+        if (login_id == "exit")
         {
             std::cout << "Now exiting the program." << std::endl;
-            return -1;
+            return {-1, ""};
         }
-        else
+        else if (check_id(login_id)) // Check ID validity
         {
-            std::cout << "Invalid selection. Please try again." << std::endl;
-            continue; // Continue to the next loop iteration, don't attempt to check the ID
-        }
-    
-        /* The two functions called upon below have not been implemented yet
-        if (is_valid_id(login_id, query_response)) // Check if the input ID is valid
-        {
-            switch (query_response) // Return a welcome statement depending on the user's status
+            login_type = check_user_type(login_id); // Get the type of user
+            switch (login_type) // Return welcome statement based on user type
             {
-                case '1':
-                    std::cout << "Valid customer ID entered. Welcome, " + name_lookup(login_id) + "." << std::endl;
-                case '2':
-                    std::cout << "Valid employee ID entered. Welcome, " + name_lookup(login_id) + "." << std::endl;
-                case '3':
-                    std::cout << "Valid administrator ID entered. Welcome, " + name_lookup(login_id) + "." << std::endl;
+                case 1:
+                    std::cout << "Valid customer ID entered. Welcome, " 
+                    + name_lookup(login_id) + "." << std::endl;
+                    break;
+                case 2:
+                    std::cout << "Valid employee ID entered. Welcome, " 
+                    + name_lookup(login_id) + "." << std::endl;
+                    break;
+                case 3:
+                    std::cout << "Valid administrator ID entered. Welcome, " 
+                    + name_lookup(login_id) + "." << std::endl;
+                    break;
                 default:
                     break;
             }
-            return atoi((char[2]) {query_response, '\0'}); // using C function to convert char to int
+            return {login_type, login_id};
         }
         else
         {
-            std::cout << "Invalid ID. Please try again." << std::endl;
+            std::cout << "Invalid login. Please try again." << std::endl;
         }
-        */
-
-       return 3; // Temporary return as administrator
     }
-
-    return -1; // Fallback return
 }
 
 /// @brief TODO: Add overview text for this function here
-/// \param admin_access A boolean value representing if the 
-/// menu is being shown to the system administrator or not
-void display_main_menu(bool admin_access)
+/// \param login_type An integer value representing the 
+/// type of user that the main menu is being shown to
+void display_main_menu(int login_type)
 {
-    // TODO: Add a way for the user to quit the menu when they're finished
+    std::string input;
+    int input_as_int;
+    bool loop_active = true;
 
-    std::cout << generate_border() << std::endl;
-    std::cout << "Standard access functions:" << std::endl;
-    std::cout << "1] View item information" << std::endl;
-    std::cout << "2] Find item information" << std::endl;
-    std::cout << "3] Add item to order" << std::endl;
-    std::cout << "4] View current order" << std::endl;
-
-    if (admin_access)
+    std::cout << std::endl << "Main Menu" << std::endl
+    << generate_border() << std::endl
+    << "1] View item information" << std::endl
+    << "2] Find item information" << std::endl
+    << "3] Add item to order" << std::endl
+    << "4] View current order" << std::endl;
+    if (login_type == 3)
     {
-        std::cout << std::endl;
-        std::cout << "Administrator access functions:" << std::endl;
-        std::cout << "5] View employee information" <<std::endl;
-        std::cout << "6] View all orders" <<std::endl;
-        std::cout << "7] Update employee information" <<std::endl;
-        std::cout << "8] Update item information" <<std::endl;
-        std::cout << "9] Update order information" <<std::endl;
+        std::cout << std::endl << "[Admin Options]" << std::endl
+        << "5] View employee information" << std::endl
+        << "6] View all orders" << std::endl
+        << "7] Update employee information" << std::endl
+        << "8] Update item information" << std::endl
+        << "9] Update order information" << std::endl;
     }
+    std::cout << std::endl << "0] Exit the program"
+    << std::endl << generate_border() << std::endl;
 
-    std::cout << generate_border() << std::endl;
-
-    while (true)
+    while (loop_active)
     {
-        std::cout << "> ";
-        char selection = getchar();
-        switch (selection) // switch for each selection listed above
+        input = get_input();
+
+        try
         {
-            case '1':
+            input_as_int = std::stoi(input);
+        }
+        catch(const std::exception& e)
+        {
+            std::cout << "Invalid input. Please try again." << std::endl;
+            continue;
+        }
+
+        if (input_as_int > 4 && login_type != 3)
+        {
+            std::cout << "Invalid input. Please try again." << std::endl;
+            continue;
+        }
+
+        switch (input_as_int)
+        {
+            case 0:
+                loop_active = false; // Exit loop (& program)
+                break;
+            case 1:
                 // TODO: implement functionality
                 break;
-            case '2':
+            case 2:
                 // TODO: implement functionality
                 break;
-            case '3':
+            case 3:
                 // TODO: implement functionality
                 break;
-            case '4':
+            case 4:
                 // TODO: implement functionality
                 break;
-            // admin selections below
-            // note: the switch break is inside so that the default case will run if admin_access is false
-            case '5':
-                if (admin_access)
-                {
-                    // TODO: implement functionality
-                    break;
-                }
-            case '6':
-                if (admin_access)
-                {
-                    // TODO: implement functionality
-                    break;
-                }
-            case '7':
-                if (admin_access)
-                {
-                    // TODO: implement functionality
-                    break;
-                }
-            case '8':
-                if (admin_access)
-                {
-                    // TODO: implement functionality
-                    break;
-                }
-            case '9':
-                if (admin_access)
-                {
-                    // TODO: implement functionality
-                    break;
-                }
+            case 5:
+                // TODO: implement functionality
+                break;
+            case 6:
+                // TODO: implement functionality
+                break;
+            case 7:
+                // TODO: implement functionality
+                break;
+            case 8:
+                // TODO: implement functionality
+                break;
+            case 9:
+                // TODO: implement functionality
+                break;
             default:
-                std::cout << "Invalid selection. Please try again." << std::endl;
                 break;
         }
     }

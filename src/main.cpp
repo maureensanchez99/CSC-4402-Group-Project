@@ -1,30 +1,22 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <utility>
 
 #include "userinterface.hpp"
+#include "checksql.hpp"
 
 int main()
 {
+    std::pair<int, std::string> user_info;
+
     title_card();
 
-    int user_type = display_login_menu();
+    user_info = display_login_menu();
 
-    switch (user_type)
+    if (user_info.first > 0)
     {
-        case -1:
-            return 0;
-            break;
-        case 1:
-            // do nothing (for now), use default
-        case 2:
-            // do nothing (for now), use default
-        case 3:
-            display_main_menu(true);
-            break;
-        default:
-            display_main_menu(false);
-            break;
+        display_main_menu(user_info.first);
     }
 
     return 0;
