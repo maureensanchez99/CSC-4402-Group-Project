@@ -156,7 +156,6 @@ std::pair<int, std::string> display_login_menu()
         {
             std::cout << "Invalid login. Please try again." << std::endl
             << generate_border() << std::endl;
-            sleep(2);
         }
     }
 }
@@ -229,25 +228,55 @@ void display_main_menu(int login_type)
             }
             case 2:
             {
-                std::cout << "Please enter the item name: ";
-                std::string item_name = get_input(true);
-                find_an_item(item_name);
+                std::cout << "Please enter the item id: ";
+                int product_id;
+                std::string product_id_string = get_input(true);
+                try
+                {
+                    product_id = std::stoi(product_id_string)
+                }
+                catch(std::invalid_argument)
+                {
+                    std::cout << "ERROR: your input must be a number" << std::endl;
+                    break;
+                }
+                find_an_item(product_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 3:
             {
-                std::cout << "Please enter the item name: ";
-                std::string item_name = get_input(true);
-                add_item_to_current_order(item_name);
+                std::cout << "Please enter the item id: ";
+                int product_id;
+                std::string product_id_string = get_input(true);
+                try
+                {
+                    product_id = std::stoi(product_id_string)
+                }
+                catch(std::invalid_argument)
+                {
+                    std::cout << "ERROR: your input must be a number" << std::endl;
+                    break;
+                }
+                add_item_to_current_order(product_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 4:
             {
-                std::cout << "Please enter the item name: ";
-                std::string item_name = get_input(true);
-                remove_item_from_current_order(item_name);
+                std::cout << "Please enter the item id: ";
+                int product_id;
+                std::string product_id_string = get_input(true);
+                try
+                {
+                    product_id = std::stoi(product_id_string)
+                }
+                catch(std::invalid_argument)
+                {
+                    std::cout << "ERROR: your input must be a number" << std::endl;
+                    break;
+                }
+                remove_item_from_current_order(product_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
