@@ -5,8 +5,8 @@
 
 #include "sqlite3.h" // External sqlite3 library
 
-#include "userinterface.hpp"
 #include "checksql.hpp"
+#include "userinterface.hpp"
 
 int main()
 {
