@@ -117,12 +117,12 @@ std::pair<int, std::string> display_login_menu()
     {
         std::cout << "Enter your login ID:" << std::endl;
         login_id = get_input();
-        std::cout <<  generate_border() << std::endl;
+        std::cout << generate_border() << std::endl;
         
         if (login_id == "exit")
         {
-            std::cout << "Now exiting the program." << std::endl;
-            std::cout <<  generate_border() << std::endl;
+            std::cout << "Now exiting the program." << std::endl
+            << generate_border() << std::endl;
             return {-1, ""};
         }
         else if (check_id(login_id)) // Check ID validity
@@ -133,30 +133,26 @@ std::pair<int, std::string> display_login_menu()
                 case 1:
                     std::cout << "Valid customer ID entered. Welcome, " 
                     + name_lookup(login_id) + "." << std::endl;
-                    std::cout << generate_border() << std::endl;
-                    sleep(2);
                     break;
                 case 2:
                     std::cout << "Valid employee ID entered. Welcome, " 
                     + name_lookup(login_id) + "." << std::endl;
-                    std::cout << generate_border() << std::endl;
-                    sleep(2); // These sleeps are just here for making the text more readable //
                     break;
                 case 3:
                     std::cout << "Valid administrator ID entered. Welcome, " 
                     + name_lookup(login_id) + "." << std::endl;
-                    std::cout << generate_border() << std::endl;
-                    sleep(2);
                     break;
                 default:
                     break;
             }
+            std::cout << generate_border() << std::endl;
+            sleep(2); // The sleep is just here for making the text more readable
             return {login_type, login_id};
         }
         else
         {
-            std::cout << "Invalid login. Please try again." << std::endl;
-            std::cout <<  generate_border() << std::endl;
+            std::cout << "Invalid login. Please try again." << std::endl
+            << generate_border() << std::endl;
             sleep(2);
         }
     }
@@ -173,18 +169,21 @@ void display_main_menu(int login_type)
 
     std::cout << "Main Menu" << std::endl
     << generate_border() << std::endl
-    << "1] View item information" << std::endl
-    << "2] Find item information" << std::endl
-    << "3] Add item to order" << std::endl
-    << "4] View current order" << std::endl;
+    << "1] View available items" << std::endl
+    << "2] Find an item" << std::endl
+    << "3] Add item to current order" << std::endl
+    << "4] Remove item from current order" << std::endl
+    << "5] View current order" << std::endl
+    << "6] Cancel current order" << std::endl
+    << "7] Checkout current order" << std::endl;
     if (login_type == 3)
     {
         std::cout << std::endl << "[Admin Options]" << std::endl
-        << "5] View employee information" << std::endl
-        << "6] View all orders" << std::endl
-        << "7] Update employee information" << std::endl
-        << "8] Update item information" << std::endl
-        << "9] Update order information" << std::endl;
+        << "8] View employee information" << std::endl
+        << "9] View all orders" << std::endl
+        << "10] Update employee information" << std::endl
+        << "11] Update item information" << std::endl
+        << "12] Update order information" << std::endl;
     }
     std::cout << std::endl << "0] Exit the program"
     << std::endl << generate_border() << std::endl;
@@ -241,9 +240,21 @@ void display_main_menu(int login_type)
             case 9:
                 // TODO: implement functionality
                 break;
+            case 10:
+                // TODO: implement functionality
+                break;
+            case 11:
+                // TODO: implement functionality
+                break;
+            case 12:
+                // TODO: implement functionality
+                break;
             default:
                 break;
         }
+
+        std::cout << "Action complete. Returning to main menu." << std::endl;
+        sleep(2);
     }
 }
 
