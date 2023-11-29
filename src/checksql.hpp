@@ -37,7 +37,7 @@ std::string name_lookup(std::string id)
 /// @return TODO: Add return description here
 std::string view_availabe_item()
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -45,7 +45,7 @@ std::string view_availabe_item()
 /// @return TODO: Add return description here
 std::string find_an_item(int item_id)
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -53,7 +53,7 @@ std::string find_an_item(int item_id)
 /// @return TODO: Add return description here
 std::string add_item_to_current_order(int item_id)
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -61,7 +61,7 @@ std::string add_item_to_current_order(int item_id)
 /// @return TODO: Add return description here
 std::string remove_item_from_current_order(int item_id)
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -69,7 +69,7 @@ std::string remove_item_from_current_order(int item_id)
 /// @return TODO: Add return description here
 std::string view_current_order()
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -77,7 +77,7 @@ std::string view_current_order()
 /// @return TODO: Add return description here
 std::string cancel_current_order()
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -85,7 +85,7 @@ std::string cancel_current_order()
 /// @return TODO: Add return description here
 std::string checkout_current_order()
 {
-
+    return std::string();
 }
 
 
@@ -97,7 +97,7 @@ std::string checkout_current_order()
 /// @return TODO: Add return description here
 std::string view_employee_info()
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -105,7 +105,7 @@ std::string view_employee_info()
 /// @return TODO: Add return description here
 std::string view_all_orders()
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -113,7 +113,7 @@ std::string view_all_orders()
 /// @return TODO: Add return description here
 std::string update_employee_info(int employee_id, int pay_mod, int hours_mod, std::string job_title)
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -121,7 +121,7 @@ std::string update_employee_info(int employee_id, int pay_mod, int hours_mod, st
 /// @return TODO: Add return description here
 std::string add_employee (int employee_id, int pay, int hours, std::string job_title)
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -129,7 +129,7 @@ std::string add_employee (int employee_id, int pay, int hours, std::string job_t
 /// @return TODO: Add return description here
 std::string remove_employee(int employee_id)
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -137,7 +137,7 @@ std::string remove_employee(int employee_id)
 /// @return TODO: Add return description here
 std::string update_item_info()
 {
-
+    return std::string();
 }
 
 /// @brief TODO: Add overview text for this function here
@@ -145,7 +145,7 @@ std::string update_item_info()
 /// @return TODO: Add return description here
 std::string update_order_info(int order_id)
 {
-
+    return std::string();
 }
 
 #endif
