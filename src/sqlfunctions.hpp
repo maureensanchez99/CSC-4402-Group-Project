@@ -43,7 +43,7 @@ std::string view_availabe_items()
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string find_an_item(int item_id)
+std::string find_an_item(std::string item_name)
 {
     return std::string();
 }
@@ -51,7 +51,7 @@ std::string find_an_item(int item_id)
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string add_item_to_current_order(int item_id)
+std::string add_item_to_current_order(std::string item_name)
 {
     return std::string();
 }
@@ -59,7 +59,7 @@ std::string add_item_to_current_order(int item_id)
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string remove_item_from_current_order(int item_id)
+std::string remove_item_from_current_order(std::string item_name)
 {
     return std::string();
 }
@@ -143,7 +143,7 @@ std::string update_item_info(std::string product_type, int cost, int stock_amoun
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string update_order_info(int order_id, int customer_id, int email, int product_name, int quantity, int total_cost)
+std::string update_order_info(int order_id, int customer_id, std::string email, std::string product_name, int quantity)
 {
     return std::string();
 }

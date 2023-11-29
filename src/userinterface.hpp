@@ -170,31 +170,32 @@ void display_main_menu(int login_type)
     int input_as_int;
     bool loop_active = true;
 
-    std::cout << "Main Menu" << std::endl
-    << generate_border() << std::endl
-    << "1] View available items" << std::endl
-    << "2] Find an item" << std::endl
-    << "3] Add item to current order" << std::endl
-    << "4] Remove item from current order" << std::endl
-    << "5] View current order" << std::endl
-    << "6] Cancel current order" << std::endl
-    << "7] Checkout current order" << std::endl;
-    if (login_type == 3)
-    {
-        std::cout << std::endl << "[Admin Options]" << std::endl
-        << "8] View employee information" << std::endl
-        << "9] View all orders" << std::endl
-        << "10] Update employee information" << std::endl
-        << "11] Add employee" << std::endl
-        << "12] Remove employee" << std::endl
-        << "13] Update item information" << std::endl
-        << "14] Update order information" << std::endl;
-    }
-    std::cout << std::endl << "0] Exit the program"
-    << std::endl << generate_border() << std::endl;
-
     while (loop_active)
     {
+
+        std::cout << "Main Menu" << std::endl
+        << generate_border() << std::endl
+        << "1] View available items" << std::endl
+        << "2] Find an item" << std::endl
+        << "3] Add item to current order" << std::endl
+        << "4] Remove item from current order" << std::endl
+        << "5] View current order" << std::endl
+        << "6] Cancel current order" << std::endl
+        << "7] Checkout current order" << std::endl;
+        if (login_type == 3)
+        {
+            std::cout << std::endl << "[Admin Options]" << std::endl
+            << "8] View employee information" << std::endl
+            << "9] View all orders" << std::endl
+            << "10] Update employee information" << std::endl
+            << "11] Add employee" << std::endl
+            << "12] Remove employee" << std::endl
+            << "13] Update item information" << std::endl
+            << "14] Update order information" << std::endl;
+        }
+        std::cout << std::endl << "0] Exit the program"
+        << std::endl << generate_border() << std::endl;
+
         input = get_input();
 
         try
@@ -222,50 +223,49 @@ void display_main_menu(int login_type)
             }
             case 1:
             {
-                // TODO: implement functionality
                 view_availabe_items();
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 2:
             {
-                // TODO: implement functionality
-                //find_an_item();
+                std::cout << "Please enter the item name: ";
+                std::string item_name = get_input(true);
+                find_an_item(item_name);
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 3:
             {
-                 // TODO: implement functionality
-                //add_item_to_current_order();
+                std::cout << "Please enter the item name: ";
+                std::string item_name = get_input(true);
+                add_item_to_current_order(item_name);
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 4:
             {
-                // TODO: implement functionality
-                //remove_item_from_current_order();
+                std::cout << "Please enter the item name: ";
+                std::string item_name = get_input(true);
+                remove_item_from_current_order(item_name);
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 5:
             {
-                // TODO: implement functionality
-                // view_current_order();
+                view_current_order();
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 6:
             {
-                // TODO: implement functionality
-                // cancel_current_order();
+                cancel_current_order();
                 std::cout << generate_border() << std::endl;
                 break;
             }
             case 7:
             {
-                // TODO: implement functionality
-                // checkout_current_order();
+                checkout_current_order();
                 std::cout << generate_border() << std::endl;
                 break;
             }
@@ -313,7 +313,15 @@ void display_main_menu(int login_type)
                     }
                     else
                     {
-                        employee_id = std::stoi(employee_id_string);
+                        try
+                        {
+                            employee_id = std::stoi(employee_id_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
                     }
 
                     std::cout << "Leave the following fields blank if no change should be made" << std::endl;
@@ -326,7 +334,15 @@ void display_main_menu(int login_type)
                     }
                     else
                     {
+                        try
+                        {
                         employee_hours = std::stoi(employee_id_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
                     }
 
                     std::cout << "Employee wage: ";
@@ -338,7 +354,15 @@ void display_main_menu(int login_type)
                     }
                     else
                     {
+                        try
+                        {
                         employee_wage = std::stoi(employee_id_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
                     }
 
                     std::cout << "Employee Job Title: ";
@@ -368,7 +392,15 @@ void display_main_menu(int login_type)
                     }
                     else
                     {
-                        employee_id = std::stoi(employee_id_string);
+                        try
+                        {
+                            employee_id = std::stoi(employee_id_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
                     }
 
                     std::cout << "Leave the following fields blank if no change should be made" << std::endl;
@@ -382,7 +414,15 @@ void display_main_menu(int login_type)
                     }
                     else
                     {
-                        employee_hours = std::stoi(employee_id_string);
+                        try
+                        {
+                        employee_hours = std::stoi(employee_hours_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
                     }
 
                     std::cout << "Employee wage: ";
@@ -395,7 +435,15 @@ void display_main_menu(int login_type)
                     }
                     else
                     {
-                        employee_wage = std::stoi(employee_id_string);
+                        try
+                        {
+                        employee_wage = std::stoi(employee_wage_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
                     }
 
                     std::cout << "Employee Job Title: ";
@@ -425,7 +473,15 @@ void display_main_menu(int login_type)
                     }
                     else
                     {
-                        employee_id = std::stoi(employee_id_string);
+                        try
+                        {
+                            employee_id = std::stoi(employee_id_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
                     }
 
                     remove_employee(employee_id);
@@ -441,9 +497,57 @@ void display_main_menu(int login_type)
             {
                 if (login_type == 3)
                 {
-                   // TODO: implement functionality
+                    //TODO: implement functionality
+                    std::cout << "Please enter the following Information" << std::endl;
+                    std::cout << "Product name: ";
+                    std::string product_name = get_input(true);
 
-                    //update_item_info(product_type, item_cost, item_amount, product_name);
+                    std::cout << "Product type: ";
+                    std::string product_type = get_input(true);
+
+                    std::cout << "Product cost: ";
+                    int product_cost;
+                    std::string product_cost_string = get_input(true);
+                    if (product_cost_string.empty())
+                    {
+                        product_cost = -1;
+                        break;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            product_cost = std::stoi(product_cost_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
+                    }
+
+                    std::cout << "Product amount: ";
+                    int product_amount;
+                    std::string product_amount_string = get_input(true);
+                    if (product_amount_string.empty())
+                    {
+                        product_amount = -1;
+                        break;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            product_amount = std::stoi(product_amount_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
+                    }
+
+                    update_item_info(product_type, product_cost, product_amount, product_name);
                 }
                 else
                 {
@@ -456,8 +560,76 @@ void display_main_menu(int login_type)
             {
                 if (login_type == 3)
                 {
-                    // TODO: implement functionality
-                    // update_order_info();
+                    std::cout << "Please enter the following Information" << std::endl;
+                    std::cout << "Order ID: ";
+                    int order_id;
+                    std::string order_id_string = get_input(true);
+                    if (order_id_string.empty())
+                    {
+                        std::cout << "invalid input, field cannot be empty" << std::endl;
+                        break;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            order_id = std::stoi(order_id_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
+                    }
+
+                    std::cout << "Leave the following fields blank if no change should be made" << std::endl;
+                    std::cout << "Customer ID: ";
+                    int customer_id;
+                    std::string customer_id_string = get_input(true);
+                    if (customer_id_string.empty())
+                    {
+                        customer_id = -1;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            customer_id = std::stoi(customer_id_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
+                    }
+
+                    std::cout << "Associated Email: ";
+                    std::string email = get_input(true);
+
+                    std::cout << "Product name: ";
+                    std::string product_name = get_input(true);
+
+                    std::cout << "Product quantity: ";
+                    int product_quantity;
+                    std::string product_quantity_string = get_input(true);
+                    if (product_quantity_string.empty())
+                    {
+                        product_quantity = -1;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            product_quantity = std::stoi(product_quantity_string);
+                        }
+                        catch(std::invalid_argument)
+                        {
+                            std::cout << "ERROR: your input must be a number" << std::endl;
+                            break;
+                        }
+                    }
+
+                    update_order_info(order_id, customer_id, email, product_name, product_quantity);
                 }
                 else
                 {
@@ -473,9 +645,18 @@ void display_main_menu(int login_type)
                 break;
             }
         }
-
-        std::cout << "Action complete. Returning to main menu." << std::endl;
-        sleep(2);
+        
+        if(loop_active)
+        {
+            std::cout << "Action complete. Returning to main menu." << std::endl
+            << generate_border() << std::endl;
+            sleep(1);
+        }
+        else
+        {
+            std::cout << generate_border() << std::endl << "Now exiting the program." 
+            << std::endl << generate_border() << std::endl;
+        }
     }
 }
 
