@@ -35,7 +35,7 @@ std::string name_lookup(std::string id)
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string view_availabe_item()
+std::string view_availabe_items()
 {
     return std::string();
 }
@@ -135,7 +135,7 @@ std::string remove_employee(int employee_id)
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string update_item_info()
+std::string update_item_info(std::string product_type, int cost, int stock_amount, std::string product_name)
 {
     return std::string();
 }
@@ -143,7 +143,7 @@ std::string update_item_info()
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string update_order_info(int order_id)
+std::string update_order_info(int order_id, int customer_id, int email, int product_name, int quantity, int total_cost)
 {
     return std::string();
 }

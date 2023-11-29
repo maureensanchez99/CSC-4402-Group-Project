@@ -72,10 +72,13 @@ void word_wrapper(std::vector<std::string> words, int wrap_size = 100)
 
 /// @brief Prompts the user for input and stores their response
 /// @return A string containing the user's input in all lowercase
-std::string get_input()
+std::string get_input(bool is_inline = false)
 {
     std::string input;
+    if (!is_inline)
+    {
     std::cout << "> ";
+    }
     getline(std::cin, input); // Reads input until a newline character is reached
 
     std::transform(input.begin(), input.end(), input.begin(), ::tolower); // Convert input to all lowercase
@@ -213,52 +216,262 @@ void display_main_menu(int login_type)
         switch (input_as_int)
         {
             case 0:
+            {
                 loop_active = false; // Exit loop (& program)
                 break;
+            }
             case 1:
+            {
                 // TODO: implement functionality
+                view_availabe_items();
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 2:
+            {
                 // TODO: implement functionality
+                //find_an_item();
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 3:
-                // TODO: implement functionality
+            {
+                 // TODO: implement functionality
+                //add_item_to_current_order();
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 4:
+            {
                 // TODO: implement functionality
+                //remove_item_from_current_order();
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 5:
+            {
                 // TODO: implement functionality
+                // view_current_order();
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 6:
+            {
                 // TODO: implement functionality
+                // cancel_current_order();
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 7:
+            {
                 // TODO: implement functionality
+                // checkout_current_order();
+                std::cout << generate_border() << std::endl;
                 break;
+            }
+
+            //ADMIN CASES//
+
             case 8:
-                // TODO: implement functionality
+            {
+                if (login_type == 3)
+                {
+                   view_employee_info();
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 9:
-                // TODO: implement functionality
+            {
+                if (login_type == 3)
+                {
+                    view_all_orders();
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 10:
-                // TODO: implement functionality
+            {
+                if (login_type == 3)
+                {
+                    std::cout << "Please enter the following Information" << std::endl;
+                    std::cout << "Employee ID: ";
+                    int employee_id;
+                    std::string employee_id_string = get_input(true);
+                    if (employee_id_string.empty())
+                    {
+                        std::cout << "invalid input, field cannot be empty" << std::endl;
+                        break;
+                    }
+                    else
+                    {
+                        employee_id = std::stoi(employee_id_string);
+                    }
+
+                    std::cout << "Leave the following fields blank if no change should be made" << std::endl;
+                    std::cout << "Employee hours: ";
+                    int employee_hours;
+                    std::string employee_hours_string = get_input(true);
+                    if (employee_hours_string.empty())
+                    {
+                        employee_hours = -1;
+                    }
+                    else
+                    {
+                        employee_hours = std::stoi(employee_id_string);
+                    }
+
+                    std::cout << "Employee wage: ";
+                    int employee_wage;
+                    std::string employee_wage_string = get_input(true);
+                    if (employee_wage_string.empty())
+                    {
+                        employee_wage = -1;
+                    }
+                    else
+                    {
+                        employee_wage = std::stoi(employee_id_string);
+                    }
+
+                    std::cout << "Employee Job Title: ";
+                    std::string employee_job_title = get_input(true);
+                    
+                    update_employee_info(employee_id, employee_wage, employee_hours, employee_job_title);
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 11:
-                // TODO: implement functionality
+            {
+                if (login_type == 3)
+                {
+                    std::cout << "Please enter the following Information" << std::endl;
+                    std::cout << "Employee ID: ";
+                    int employee_id;
+                    std::string employee_id_string = get_input(true);
+                    if (employee_id_string.empty())
+                    {
+                        std::cout << "invalid input, field cannot be empty" << std::endl;
+                        break;
+                    }
+                    else
+                    {
+                        employee_id = std::stoi(employee_id_string);
+                    }
+
+                    std::cout << "Leave the following fields blank if no change should be made" << std::endl;
+                    std::cout << "Employee hours: ";
+                    int employee_hours;
+                    std::string employee_hours_string = get_input(true);
+                    if (employee_hours_string.empty())
+                    {
+                        std::cout << "invalid input, field cannot be empty" << std::endl;
+                        break;
+                    }
+                    else
+                    {
+                        employee_hours = std::stoi(employee_id_string);
+                    }
+
+                    std::cout << "Employee wage: ";
+                    int employee_wage;
+                    std::string employee_wage_string = get_input(true);
+                    if (employee_wage_string.empty())
+                    {
+                        std::cout << "invalid input, field cannot be empty" << std::endl;
+                        break;
+                    }
+                    else
+                    {
+                        employee_wage = std::stoi(employee_id_string);
+                    }
+
+                    std::cout << "Employee Job Title: ";
+                    std::string employee_job_title = get_input(true);
+                    
+                    update_employee_info(employee_id, employee_wage, employee_hours, employee_job_title);
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 12:
-                // TODO: implement functionality
+            {
+                if (login_type == 3)
+                {
+                    std::cout << "Please enter the following Information" << std::endl;
+                    std::cout << "Employee ID: ";
+                    int employee_id;
+                    std::string employee_id_string = get_input(true);
+                    if (employee_id_string.empty())
+                    {
+                        std::cout << "invalid input, field cannot be empty" << std::endl;
+                        break;
+                    }
+                    else
+                    {
+                        employee_id = std::stoi(employee_id_string);
+                    }
+
+                    remove_employee(employee_id);
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 13:
-                // TODO: implement functionality
+            {
+                if (login_type == 3)
+                {
+                   // TODO: implement functionality
+
+                    //update_item_info(product_type, item_cost, item_amount, product_name);
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             case 14:
-                // TODO: implement functionality
+            {
+                if (login_type == 3)
+                {
+                    // TODO: implement functionality
+                    // update_order_info();
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
                 break;
+            }
             default:
+            {
+                std::cout << "Invalid input. Please try again." << std::endl
+                << generate_border() << std::endl;
                 break;
+            }
         }
 
         std::cout << "Action complete. Returning to main menu." << std::endl;
