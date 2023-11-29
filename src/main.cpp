@@ -5,7 +5,15 @@
 #include <chrono>
 #include <thread>
 
-#include "sqlite3.h" // External sqlite3 library
+// Importing the official sqlite3 library
+// Install: On Linux, run this command: sudo apt-get install libsqlite3-dev
+// Source: https://www.sqlite.org/cintro.html
+#include "sqlite3.h"
+
+// Importing an unofficial sqlite3 wrapper for modern C++
+// No need to install, it's already included in external/sqlite_modern_cpp
+// Source: https://github.com/SqliteModernCpp/sqlite_modern_cpp
+#include "sqlite_modern_cpp.h"
 
 #include "checksql.hpp"
 #include "userinterface.hpp"
