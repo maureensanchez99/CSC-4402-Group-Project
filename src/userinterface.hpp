@@ -182,8 +182,10 @@ void display_main_menu(int login_type)
         << "8] View employee information" << std::endl
         << "9] View all orders" << std::endl
         << "10] Update employee information" << std::endl
-        << "11] Update item information" << std::endl
-        << "12] Update order information" << std::endl;
+        << "11] Add employee" << std::endl
+        << "12] Remove employee" << std::endl
+        << "13] Update item information" << std::endl
+        << "14] Update order information" << std::endl;
     }
     std::cout << std::endl << "0] Exit the program"
     << std::endl << generate_border() << std::endl;
@@ -247,6 +249,12 @@ void display_main_menu(int login_type)
                 // TODO: implement functionality
                 break;
             case 12:
+                // TODO: implement functionality
+                break;
+            case 13:
+                // TODO: implement functionality
+                break;
+            case 14:
                 // TODO: implement functionality
                 break;
             default:
