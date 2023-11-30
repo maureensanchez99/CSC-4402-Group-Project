@@ -17,8 +17,8 @@ std::pair<bool, std::string> check_id(bool employee_login, int id)
         SQLite::Database db(get_db_filepath());
         if (employee_login)
         {
-            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM employee WHERE employee_id = " + id);
-            std::string temp = db.execAndGet("SELECT manager FROM employee WHERE employee_id = " + id);
+            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM employee WHERE employee_id = " + std::to_string(id));
+            std::string temp = db.execAndGet("SELECT manager FROM employee WHERE employee_id = " + std::to_string(id));
             if (std::stoi(temp) == 1)
             {
                 return_val.first = true;
@@ -26,7 +26,7 @@ std::pair<bool, std::string> check_id(bool employee_login, int id)
         }
         else
         {
-            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + id);
+            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + std::to_string(id));
         }
     }
     catch (const std::exception& e) {} // If query fails, the ID is invalid
