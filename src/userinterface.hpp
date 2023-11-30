@@ -111,7 +111,7 @@ void display_main_menu(int login_type)
     std::string input;
     int input_as_int;
     bool loop_active = true;
-/*
+
     while (loop_active)
     {
         std::cout << "Main Menu" << std::endl
@@ -157,25 +157,27 @@ void display_main_menu(int login_type)
 
         switch (input_as_int)
         {
-            case 0:
+            case 0: // exit
             {
                 loop_active = false; // Exit loop (& program)
                 break;
             }
-            case 1:
+
+            case 1: // view all items
             {
                 view_availabe_items();
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 2:
+
+            case 2: // find a specific item
             {
                 std::cout << "Please enter the item id: ";
                 int product_id;
                 std::string product_id_string = get_input(true);
                 try
                 {
-                    product_id = std::stoi(product_id_string)
+                    product_id = std::stoi(product_id_string);
                 }
                 catch(std::invalid_argument)
                 {
@@ -186,14 +188,15 @@ void display_main_menu(int login_type)
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 3:
+
+            case 3: // add item to current order
             {
                 std::cout << "Please enter the item id: ";
                 int product_id;
                 std::string product_id_string = get_input(true);
                 try
                 {
-                    product_id = std::stoi(product_id_string)
+                    product_id = std::stoi(product_id_string);
                 }
                 catch(std::invalid_argument)
                 {
@@ -204,14 +207,15 @@ void display_main_menu(int login_type)
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 4:
+
+            case 4: // remove item from current order
             {
                 std::cout << "Please enter the item id: ";
                 int product_id;
                 std::string product_id_string = get_input(true);
                 try
                 {
-                    product_id = std::stoi(product_id_string)
+                    product_id = std::stoi(product_id_string);
                 }
                 catch(std::invalid_argument)
                 {
@@ -222,28 +226,33 @@ void display_main_menu(int login_type)
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 5:
+
+            case 5: // view current order
             {
                 view_current_order();
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 6:
+
+            case 6: // cancel current order
             {
                 cancel_current_order();
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 7:
+
+            case 7: // checkout current order
             {
                 checkout_current_order();
                 std::cout << generate_border() << std::endl;
                 break;
             }
 
+
             //ADMIN CASES//
 
-            case 8:
+
+            case 8: // view employee information
             {
                 if (login_type == 3)
                 {
@@ -256,7 +265,8 @@ void display_main_menu(int login_type)
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 9:
+
+            case 9: // view all orders
             {
                 if (login_type == 3)
                 {
@@ -269,77 +279,87 @@ void display_main_menu(int login_type)
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 10:
+
+            case 10: // update an employee's information
             {
                 if (login_type == 3)
                 {
-                    std::cout << "Please enter the following Information" << std::endl;
-                    std::cout << "Employee ID: ";
                     int employee_id;
-                    std::string employee_id_string = get_input(true);
-                    if (employee_id_string.empty())
-                    {
-                        std::cout << "invalid input, field cannot be empty" << std::endl;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            employee_id = std::stoi(employee_id_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
+                    std::string name;
+                    std::string address;
+                    int hours;
+                    int wage;
+                    bool is_manager;
 
-                    std::cout << "Leave the following fields blank if no change should be made" << std::endl;
-                    std::cout << "Employee hours: ";
-                    int employee_hours;
-                    std::string employee_hours_string = get_input(true);
-                    if (employee_hours_string.empty())
-                    {
-                        employee_hours = -1;
-                    }
-                    else
-                    {
-                        try
-                        {
-                        employee_hours = std::stoi(employee_id_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
+                    std::cout << "Please enter the employee id: ";
+                    employee_id = convert_string_to_number(get_input(true));
+                    if (employee_id = -1) {std::cout << "Invalid input. Please try again" << std::endl; break;}
 
-                    std::cout << "Employee wage: ";
-                    int employee_wage;
-                    std::string employee_wage_string = get_input(true);
-                    if (employee_wage_string.empty())
-                    {
-                        employee_wage = -1;
-                    }
-                    else
-                    {
-                        try
-                        {
-                        employee_wage = std::stoi(employee_id_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
+                    std::cout << "Please enter the following information (leave blank if no change should be made)"
+                    << std::endl << "Employee name: ";
+                    name = get_input(true);
 
-                    std::cout << "Employee Job Title: ";
-                    std::string employee_job_title = get_input(true);
+                    std::cout << "Employee Address in the format [street_num street_name (optional ->) apt_num city state zipcode]: ";
+                    address = get_input(true);
+                    //check_address(address);
+
+                    std::cout << "Please enter the employee hours: ";
+                    hours = convert_string_to_number(get_input(true));
+                    if (hours = -1) {std::cout << "Invalid input. Please try again" << std::endl; break;}
+
+                    std::cout << "Please enter the employee wage: ";
+                    wage = convert_string_to_number(get_input(true));
+                    if (wage = -1) {std::cout << "Invalid input. Please try again" << std::endl; break;}
+
+                    std::cout << "Please enter if the employee is a manager (T/F): ";
+                    std::string is_manager_string = get_input();
+                    if(is_manager_string == "T" || is_manager_string == "t") {is_manager = true;}
+                    else if(is_manager_string != "F" || is_manager_string != "f") {is_manager = false;}
+                    else {std::cout << "Invalid input. Please try again" << std::endl; break;}
+
+                    update_employee_info(employee_id, name, address, hours, wage, is_manager);
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
+                break;
+            }
+
+            case 11: // add a new employee
+            {
+                if (login_type == 3)
+                {
+                 
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
+                break;
+            }
+
+            case 12: // remove an employee
+            {
+                if (login_type == 3)
+                {
+
+                }
+                else
+                {
+                    std::cout << "Invalid input. Please try again." << std::endl;
+                }
+                std::cout << generate_border() << std::endl;
+                break;
+            }
+
+            case 13: // update an item's information
+            {
+                if (login_type == 3)
+                {
                     
-                    update_employee_info(employee_id, employee_wage, employee_hours, employee_job_title);
                 }
                 else
                 {
@@ -348,79 +368,12 @@ void display_main_menu(int login_type)
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 11:
+
+            case 14: // update an order's information
             {
                 if (login_type == 3)
                 {
-                    std::cout << "Please enter the following Information" << std::endl;
-                    std::cout << "Employee ID: ";
-                    int employee_id;
-                    std::string employee_id_string = get_input(true);
-                    if (employee_id_string.empty())
-                    {
-                        std::cout << "invalid input, field cannot be empty" << std::endl;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            employee_id = std::stoi(employee_id_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    std::cout << "Leave the following fields blank if no change should be made" << std::endl;
-                    std::cout << "Employee hours: ";
-                    int employee_hours;
-                    std::string employee_hours_string = get_input(true);
-                    if (employee_hours_string.empty())
-                    {
-                        std::cout << "invalid input, field cannot be empty" << std::endl;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                        employee_hours = std::stoi(employee_hours_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    std::cout << "Employee wage: ";
-                    int employee_wage;
-                    std::string employee_wage_string = get_input(true);
-                    if (employee_wage_string.empty())
-                    {
-                        std::cout << "invalid input, field cannot be empty" << std::endl;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                        employee_wage = std::stoi(employee_wage_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    std::cout << "Employee Job Title: ";
-                    std::string employee_job_title = get_input(true);
-                    
-                    update_employee_info(employee_id, employee_wage, employee_hours, employee_job_title);
+                 
                 }
                 else
                 {
@@ -429,186 +382,7 @@ void display_main_menu(int login_type)
                 std::cout << generate_border() << std::endl;
                 break;
             }
-            case 12:
-            {
-                if (login_type == 3)
-                {
-                    std::cout << "Please enter the following Information" << std::endl;
-                    std::cout << "Employee ID: ";
-                    int employee_id;
-                    std::string employee_id_string = get_input(true);
-                    if (employee_id_string.empty())
-                    {
-                        std::cout << "invalid input, field cannot be empty" << std::endl;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            employee_id = std::stoi(employee_id_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
 
-                    remove_employee(employee_id);
-                }
-                else
-                {
-                    std::cout << "Invalid input. Please try again." << std::endl;
-                }
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            case 13:
-            {
-                if (login_type == 3)
-                {
-                    //TODO: implement functionality
-                    std::cout << "Please enter the following Information" << std::endl;
-                    std::cout << "Product name: ";
-                    std::string product_name = get_input(true);
-
-                    std::cout << "Product type: ";
-                    std::string product_type = get_input(true);
-
-                    std::cout << "Product cost: ";
-                    int product_cost;
-                    std::string product_cost_string = get_input(true);
-                    if (product_cost_string.empty())
-                    {
-                        product_cost = -1;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            product_cost = std::stoi(product_cost_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    std::cout << "Product amount: ";
-                    int product_amount;
-                    std::string product_amount_string = get_input(true);
-                    if (product_amount_string.empty())
-                    {
-                        product_amount = -1;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            product_amount = std::stoi(product_amount_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    update_item_info(product_type, product_cost, product_amount, product_name);
-                }
-                else
-                {
-                    std::cout << "Invalid input. Please try again." << std::endl;
-                }
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            case 14:
-            {
-                if (login_type == 3)
-                {
-                    std::cout << "Please enter the following Information" << std::endl;
-                    std::cout << "Order ID: ";
-                    int order_id;
-                    std::string order_id_string = get_input(true);
-                    if (order_id_string.empty())
-                    {
-                        std::cout << "invalid input, field cannot be empty" << std::endl;
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            order_id = std::stoi(order_id_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    std::cout << "Leave the following fields blank if no change should be made" << std::endl;
-                    std::cout << "Customer ID: ";
-                    int customer_id;
-                    std::string customer_id_string = get_input(true);
-                    if (customer_id_string.empty())
-                    {
-                        customer_id = -1;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            customer_id = std::stoi(customer_id_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    std::cout << "Associated Email: ";
-                    std::string email = get_input(true);
-
-                    std::cout << "Product name: ";
-                    std::string product_name = get_input(true);
-
-                    std::cout << "Product quantity: ";
-                    int product_quantity;
-                    std::string product_quantity_string = get_input(true);
-                    if (product_quantity_string.empty())
-                    {
-                        product_quantity = -1;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            product_quantity = std::stoi(product_quantity_string);
-                        }
-                        catch(std::invalid_argument)
-                        {
-                            std::cout << "ERROR: your input must be a number" << std::endl;
-                            break;
-                        }
-                    }
-
-                    update_order_info(order_id, customer_id, email, product_name, product_quantity);
-                }
-                else
-                {
-                    std::cout << "Invalid input. Please try again." << std::endl;
-                }
-                std::cout << generate_border() << std::endl;
-                break;
-            }
             default:
             {
                 std::cout << "Invalid input. Please try again." << std::endl
@@ -629,7 +403,6 @@ void display_main_menu(int login_type)
             << std::endl << generate_border() << std::endl;
         }
     }
-*/
 }
 
 #endif
