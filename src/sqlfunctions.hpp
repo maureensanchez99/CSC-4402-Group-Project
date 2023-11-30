@@ -135,7 +135,7 @@ bool find_an_item(int item_id)
         SQLite::Database db(get_db_filepath());
         if (item_id <= 3)
         {
-            SQLite::Statement query(db, "Select * FROM plant NATURAL JOIN product WHERE plant.product_id = " + std::to_string(item_id));
+            SQLite::Statement query(db, "SELECT * FROM plant NATURAL JOIN product WHERE plant.product_id = " + std::to_string(item_id));
             while (query.executeStep())
             {
                 std::string col1 = query.getColumn(0);
@@ -193,7 +193,7 @@ bool find_an_item(int item_id)
         else if (item_id <= 6)
         {
             std::cout << "|ID  |Type         |Brand         | Price   |" << std::endl;
-            SQLite::Statement query(db, "Select * FROM tool NATURAL JOIN product WHERE tool.product_id = " + std::to_string(item_id));
+            SQLite::Statement query(db, "SELECT * FROM tool NATURAL JOIN product WHERE tool.product_id = " + std::to_string(item_id));
             while (query.executeStep())
             {
                 std::string col1 = query.getColumn(0);
@@ -228,7 +228,7 @@ bool find_an_item(int item_id)
         {
             std::cout << "|ID  |Name      |Type       |Season   |Zone|Sunlight      |Water        |Humidity           |Price |" << std::endl
             << "----------------------------------------------------------------------------------------------------" << std::endl;
-            SQLite::Statement query(db, "Select * FROM seed NATURAL JOIN product WHERE seed.product_id = " + std::to_string(item_id));
+            SQLite::Statement query(db, "SELECT * FROM seed NATURAL JOIN product WHERE seed.product_id = " + std::to_string(item_id));
             while (query.executeStep())
             {
                 std::string col1 = query.getColumn(0);
@@ -468,7 +468,68 @@ bool view_all_orders()
 {
     bool success = false;
 
-    // implement here
+    try
+    {
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement query(db, "SELECT * FROM cust_order");
+        while (query.executeStep())
+        {
+            std::string col1 = query.getColumn(0);
+            std::string col2 = query.getColumn(1);
+            std::string col3 = query.getColumn(2);
+            std::string col4 = query.getColumn(3);
+            std::string col5 = query.getColumn(4);
+            std::string col6 = query.getColumn(5);
+            std::string col7 = query.getColumn(6);
+            std::string col8 = query.getColumn(7);
+            std::string output = "|" + col1;
+            while (output.size() < 5)
+            {
+                output += " ";
+            }
+            output += "|" + col2;
+            while (output.size() < 19)
+            {
+                output += " ";
+            }
+            output += "|" + col3;
+            while (output.size() < 34)
+            {
+                output += " ";
+            }
+            output += "|" + col4;
+            while (output.size() < 44)
+            {
+                output += " ";
+            }
+            output += "|" + col5;
+            while (output.size() < 59)
+            {
+                output += " ";
+            }
+            output += "|" + col6;
+            while (output.size() < 74)
+            {
+                output += " ";
+            }
+            output += "|" + col7;
+            while (output.size() < 89)
+            {
+                output += " ";
+            }
+            output += "|" + col8;
+            while (output.size() < 99)
+            {
+                output += " ";
+            }
+            output += "|";
+            std::cout << output << std::endl;
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
 
     return success;
 }
