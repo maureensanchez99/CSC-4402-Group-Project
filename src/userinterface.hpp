@@ -56,21 +56,21 @@ std::pair<int, int> display_login_menu()
         }
         else
         {
-            try
+            lookup_return = check_id(employee_login, input); // Lookup the user ID
+
+            try // Convert ID into an int
             {
-                return_val.second = std::stoi(input); // Convert ID into an int
+                return_val.second = std::stoi(input);
             }
-            catch(const std::exception& e) // If stoi() fails, prompt user to try again
+            catch(const std::exception& e) // If stoi() fails, restart loop
             {
-                invalid_msg("login");
+                invalid_msg("ID");
                 continue;
             }
 
-            lookup_return = check_id(employee_login, return_val.second); // Lookup the user ID
-
-            if (lookup_return.second.empty()) // Restart loop if ID is invalid
+            if (lookup_return.second.empty()) // If ID is invalid (empty), restart loop
             {
-                invalid_msg("login");
+                invalid_msg("ID");
                 continue;
             }
             else if (employee_login && lookup_return.first) // Output welcome statement
@@ -107,6 +107,8 @@ void display_main_menu(int login_type)
     std::string input;
     int input_as_int;
     bool loop_active = true;
+    bool action_success = false;
+    bool fall_trigger = false;
 
     while (loop_active)
     {
@@ -114,36 +116,26 @@ void display_main_menu(int login_type)
         << generate_border() << std::endl
         << "1] View available items" << std::endl
         << "2] Find an item" << std::endl
-        << "3] Add item to current order" << std::endl
-        << "4] Remove item from current order" << std::endl
+        << "3] Add an item to the current order" << std::endl
+        << "4] Remove an item from the current order" << std::endl
         << "5] View current order" << std::endl
         << "6] Cancel current order" << std::endl
         << "7] Checkout current order" << std::endl;
         if (login_type == 3)
         {
             std::cout << std::endl << "[Admin Options]" << std::endl
-            << "8] View employee information" << std::endl
-            << "9] View all orders" << std::endl
-            << "10] Update employee information" << std::endl
-            << "11] Add employee" << std::endl
-            << "12] Remove employee" << std::endl
-            << "13] Update item information" << std::endl
-            << "14] Update order information" << std::endl;
+            << "8] View all orders" << std::endl
+            << "9] View all employees" << std::endl
+            << "10] Remove an employee" << std::endl
+            << "11] Add an employee" << std::endl
+            << "12] Update an employee's information" << std::endl
+            << "13] Update the details of an item" << std::endl
+            << "14] Update the details of an order" << std::endl;
         }
         std::cout << std::endl << "0] Exit the program"
         << std::endl << generate_border() << std::endl;
 
-        input = get_input();
-
-        try
-        {
-            input_as_int = std::stoi(input);
-        }
-        catch(const std::exception& e)
-        {
-            invalid_msg();
-            continue;
-        }
+        input = get_int(std::string(), "input");
 
         if (input_as_int > 7 && login_type != 3)
         {
@@ -153,129 +145,205 @@ void display_main_menu(int login_type)
 
         switch (input_as_int)
         {
-            case 0: // exit
+            case 0: // Exit loop (& program)
             {
-                loop_active = false; // Exit loop (& program)
+                loop_active = false;
                 break;
             }
-            case 1: // view all items
+            case 1: // View all items
             {
-                view_available_items();
-                std::cout << generate_border() << std::endl;
+                action_success = view_available_items();
                 break;
             }
-            case 2: // find a specific item
+            case 2: // Find a specific item
             {
-                std::cout << "Please enter the item id: ";
-                int product_id;
-                std::string product_id_string = get_input(true);
-                try
+                int product_id = get_int("Enter the item ID: ");
+
+                action_success = find_an_item(product_id);
+                break;
+            }
+            case 3: // Add item to current order
+            {
+                int order_id = get_int("Enter the order ID: ");
+                int customer_id;
+
+                while (true) // Check the validity of the customer ID
                 {
-                    product_id = std::stoi(product_id_string);
+                    std::cout << "Enter the customer's ID: ";
+                    std::string customer_id_str = get_input(true);
+
+                    std::pair<bool, std::string> check_return = check_id(false, customer_id_str);
+                    if (!(check_return.second).empty())
+                    {
+                        customer_id = std::stoi(customer_id_str);
+                        break;
+                    }
+                    else
+                    {
+                        invalid_msg("ID");
+                        continue;
+                    }
                 }
-                catch(std::invalid_argument)
-                {
-                    std::cout << "ERROR: Your input must be a number." << std::endl;
-                    break;
-                }
-                find_an_item(product_id);
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            case 3: // add item to current order
-            {
 
-                std::cout << "Please enter the item id: ";
-                std::string product_id = get_input(true);
-
-                std::cout << "Please enter the item amount: ";
-                std::string item_amount = get_input(true);
-
-                std::cout << "Please enter the order id: ";
-                std::string order_id = get_input(true);
+                int product_id = get_int("Enter the item ID: ");
+                int item_amount = get_int("Enter the amount to add: ");
 
                 std::cout << "Please enter the order type: ";
                 std::string order_type = get_input(true);
 
-                std::cout << "Please enter the customer id: ";
-                std::string customer_id = get_input(true);
+                action_success = add_item_to_order(product_id, item_amount, order_id, order_type, customer_id);
+                break;
+            }
+            case 4: // Remove item from current order
+            {
+                int order_id = get_int("Enter the order ID: ");
+                int product_id = get_int("Enter the item ID: ");
 
-                add_item_to_order(product_id, item_amount, order_id, order_type, customer_id);
-                std::cout << generate_border() << std::endl;
+                action_success = remove_item_from_order(product_id, order_id);
                 break;
             }
-            case 4: // remove item from current order
+            case 5: // View current order
             {
-                std::cout << "Please enter the order id: ";
-                std::string order_id = get_input(true);
+                int order_id = get_int("Enter the order ID: ");
 
-                std::cout << "Please enter the product id: ";
-                std::string product_id = get_input(true);
+                action_success = view_order(order_id);
+                break;
+            }
+            case 6: // Cancel current order
+            {
+                int order_id = get_int("Enter the order ID: ");
+                int customer_id;
 
-                remove_item_from_order(product_id, order_id);
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            case 5: // view current order
-            {
-                std::cout << "Please enter the order id: ";
-                std::string order_id = get_input(true);
-                view_order(order_id);
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            case 6: // cancel current order
-            {
-                std::cout << "Please enter the order id: ";
-                std::string order_id = get_input(true);
+                while (true) // Check the validity of the customer ID
+                {
+                    std::cout << "Enter the customer's ID: ";
+                    std::string customer_id_str = get_input(true);
 
-                std::cout << "Please enter the customer id: ";
-                std::string customer_id = get_input(true);
-                cancel_order(order_id, customer_id);
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            case 7: // checkout current order
-            {
-                std::cout << "Please enter the order id: ";
-                std::string order_id = get_input(true);
+                    std::pair<bool, std::string> check_return = check_id(false, customer_id_str);
+                    if (!(check_return.second).empty())
+                    {
+                        customer_id = std::stoi(customer_id_str);
+                        break;
+                    }
+                    else
+                    {
+                        invalid_msg("ID");
+                        continue;
+                    }
+                }
 
-                checkout_order(order_id);
-                std::cout << generate_border() << std::endl;
+                action_success = cancel_order(order_id, customer_id);
                 break;
             }
-            case 8: // view employee information
+            case 7: // Checkout current order
             {
-                view_employee_info();
-                std::cout << generate_border() << std::endl;
+                int order_id = get_int("Enter the order ID: ");
+
+                action_success = checkout_order(order_id);
                 break;
             }
-            case 9: // view all orders
+            case 8: // View all orders
             {
-                view_all_orders();
-                std::cout << generate_border() << std::endl;
+                action_success = view_all_orders();
                 break;
             }
-            case 10: // update an employee's information
+            case 9: // View all employees' info
             {
-                std::string employee_id;
+                action_success = view_all_employees();
+                break;
+            }
+            case 10: // Remove an employee
+            {
+                int employee_id;
+
+                while (true) // Check the validity of the employee ID
+                {
+                    std::cout << "Enter the employee's ID: ";
+                    std::string employee_id_str = get_input(true);
+
+                    std::pair<bool, std::string> check_return = check_id(true, employee_id_str);
+                    if (!(check_return.second).empty())
+                    {
+                        employee_id = std::stoi(employee_id_str);
+                        break;
+                    }
+                    else
+                    {
+                        invalid_msg("ID");
+                        continue;
+                    }
+                }
+
+                action_success = remove_employee(employee_id);
+                break;
+            }
+            case 11: // Add a new employee
+            {
+                fall_trigger = true; // Fall through to next case (behavior is shared)
+            }
+            case 12: // Update an employee's information
+            {
+                int employee_id;
                 std::string name;
                 std::string address;
-                std::string hours;
-                std::string wage;
+                int hours;
+                int wage;
                 bool is_manager;
 
-                std::cout << "Enter the employee's id: ";
-                employee_id = get_input(true);
+                if (!fall_trigger) // If the user is trying to update info
+                {
+                    while (true)
+                    {
+                        std::cout << "Enter the employee's ID: ";
+                        std::string employee_id_str = get_input(true);
 
-                std::cout << "Enter the following information (leave blank if no change should be made)"
-                << std::endl << "Employee name: ";
+                        std::pair<bool, std::string> check_return = check_id(true, employee_id_str);
+                        if (!(check_return.second).empty())
+                        {
+                            employee_id = std::stoi(employee_id_str);
+                            break;
+                        }
+                        else
+                        {
+                            invalid_msg("ID");
+                            continue;
+                        }
+                    }
+                }
+                else // If the user is trying to add a new employee
+                {
+                    std::cout << "Enter the employee's new ID: ";
+                    std::string employee_id_str = get_input(true);
+
+                    std::pair<bool, std::string> check_return = check_id(true, employee_id_str);
+                    if ((check_return.second).empty())
+                    {
+                        try
+                        {
+                            employee_id = std::stoi(employee_id_str);
+                        }
+                        catch(const std::exception& e)
+                        {
+                            invalid_msg("input, the ID must be an integer value");
+                            continue;
+                        }
+                        fall_trigger = false; // Reset fall_trigger to false
+                        break;
+                    }
+                    else
+                    {
+                        invalid_msg("input, this ID has already been taken");
+                        continue;
+                    }
+                }
+
+                std::cout << "Enter the employee's new name: ";
                 name = get_input(true);
                 
                 while (true)
                 {
-                    std::cout << "Enter the employee's address in the format"
-                    " [street_num street_name apt_num(optional) city state zipcode]: ";
+                    std::cout << "Enter the employee's new address in the format "
+                    "[street_num street_name apt_num(optional) city state zipcode]: ";
                     address = get_input(true);
 
                     int temp_int = word_breaker(address).size();
@@ -290,15 +358,12 @@ void display_main_menu(int login_type)
                     }
                 }
 
-                std::cout << "Enter the employee's hours: ";
-                hours = get_input(true);
-
-                std::cout << "Enter the employee's wage: ";
-                wage = get_input(true);
+                hours = get_int("Enter the employee's new hours: ");
+                wage = get_int("Enter the employee's new wage: ");
                 
                 while (true)
                 {
-                    std::cout << "Please enter if the employee is a manager (Y/N): ";
+                    std::cout << "Will the employee be a manager? (Y/N): ";
                     std::string is_manager_str = get_input(true);
 
                     if (is_manager_str == "Y" || is_manager_str == "y") 
@@ -318,51 +383,66 @@ void display_main_menu(int login_type)
                     }
                 }
 
-                update_employee_info(employee_id, name, address, hours, wage, is_manager);
-                std::cout << generate_border() << std::endl;
+                action_success = update_employee_info(employee_id, name, address, hours, wage, is_manager);
                 break;
             }
-            case 11: // add a new employee
+            case 13: // Update the details of an item
             {
-                //add_employee();
-                std::cout << generate_border() << std::endl;
+                std::cout << "Enter the item's type: ";
+                std::string item_type = get_input(true);
+
+                int cost = get_int("Enter the new cost of the item: ");
+                int stock = get_int("Enter the new amount of stock: ");
+                
+                std::cout << "Enter the name of the item: ";
+                std::string item_name = get_input(true);
+
+                action_success = update_item_info(item_type, cost, stock, item_name);
                 break;
             }
-            case 12: // remove an employee
+            case 14: // Update the details of an order
             {
-                //remove_employee();
-                std::cout << generate_border() << std::endl;
+                int order_id = get_int("Enter the order ID: ");
+                int customer_id = get_int("Enter the customer's ID: ");
+
+                std::cout << "Enter the customer's email address: ";
+                std::string email_address = get_input(true);
+
+                std::cout << "Enter the name of the item: ";
+                std::string item_name = get_input(true);
+
+                int item_amount = get_int("Enter the amount of items: ");
+
+                action_success = update_order_info(order_id, customer_id, email_address, item_name, item_amount);
                 break;
             }
-            case 13: // update an item's information
-            {
-                //update_item_info();
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            case 14: // update an order's information
-            {
-                //update_order_info();
-                std::cout << generate_border() << std::endl;
-                break;
-            }
-            default: // invalid input
+            default: // Invalid input
             {
                 invalid_msg();
                 break;
             }
         }
         
-        if (loop_active)
+        if (loop_active) // If the loop continues, output a return message
         {
-            std::cout << "Action complete. Returning to main menu." << std::endl
-            << generate_border() << std::endl;
+            std::cout << generate_border() << std::endl;
+            if (action_success)
+            {
+                std::cout << "The action was successful. ";
+            }
+            else
+            {
+                std::cout << "The action failed. ";
+            }
+            std::cout << "Now returning to main menu."
+            << std::endl << generate_border() << std::endl;
             sleep(1);
         }
-        else
+        else // If the loop will end, output an exit message
         {
-            std::cout << generate_border() << std::endl << "Now exiting the program." 
-            << std::endl << generate_border() << std::endl;
+            std::cout << generate_border() << std::endl
+            << "Now exiting the program." << std::endl 
+            << generate_border() << std::endl;
         }
     }
 }

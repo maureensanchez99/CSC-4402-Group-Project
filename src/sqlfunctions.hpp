@@ -4,9 +4,9 @@
 /// @brief Determines if a user's ID is valid or not
 /// \param employee_login A boolean value representing 
 /// if the user is logging in as an employee
-/// @param id An integer containing the user's ID number
+/// @param id A string containing the user's ID number
 /// @return An std::pair of the user's status as a manager and their first name
-std::pair<bool, std::string> check_id(bool employee_login, int id)
+std::pair<bool, std::string> check_id(bool employee_login, std::string id)
 {
     std::pair<bool, std::string> return_val = {false, std::string()};
 
@@ -15,8 +15,8 @@ std::pair<bool, std::string> check_id(bool employee_login, int id)
         SQLite::Database db(get_db_filepath());
         if (employee_login)
         {
-            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM employee WHERE employee_id = " + std::to_string(id));
-            std::string temp = db.execAndGet("SELECT manager FROM employee WHERE employee_id = " + std::to_string(id));
+            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM employee WHERE employee_id = " + id);
+            std::string temp = db.execAndGet("SELECT manager FROM employee WHERE employee_id = " + id);
             if (std::stoi(temp) == 1)
             {
                 return_val.first = true;
@@ -24,7 +24,7 @@ std::pair<bool, std::string> check_id(bool employee_login, int id)
         }
         else
         {
-            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + std::to_string(id));
+            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + id);
         }
     }
     catch (const std::exception& e) {} // If query fails, the ID is invalid
@@ -35,7 +35,7 @@ std::pair<bool, std::string> check_id(bool employee_login, int id)
 // Regular menu functions
 
 /// @brief 
-/// @return 
+/// @return A bool representing the success of the function
 bool view_available_items()
 {
     try
@@ -126,8 +126,8 @@ bool view_available_items()
 }
 
 /// @brief 
-/// @param item_id 
-/// @return 
+/// @param item_id The ID of the item as an integer
+/// @return A bool representing the success of the function
 bool find_an_item(int item_id)
 {
     try
@@ -299,19 +299,24 @@ bool find_an_item(int item_id)
 }
 
 /// @brief 
-/// @param item_id 
-/// @param item_amount 
-/// @param order_id 
-/// @param order_type 
-/// @param customer_id 
-/// @return 
-bool add_item_to_order(std::string item_id, std::string item_amount, std::string order_id, std::string order_type, std::string customer_id)
+/// @param item_id The ID of the item as an integer
+/// @param item_amount The amount of the item as an integer
+/// @param order_id The ID of the order as an integer
+/// @param order_type The type of the order as a string
+/// @param customer_id The ID of the customer as an integer
+/// @return A bool representing the success of the function
+bool add_item_to_order(int item_id, int item_amount, int order_id, std::string order_type, int customer_id)
 {
-    std::string query1 = "SELECT order_id FROM cust_order WHERE order_id = " + order_id;
-    std::string query2 = "INSERT INTO cust_order VALUES (" + order_id + ", " + order_type + ", " + customer_id + ", Waiting to be Processed);";
-    std::string query3 = "SELECT order_id FROM prod_order WHERE order_id = " + order_id +" AND product_id = " + item_id;
-    std::string query4 = "INSERT INTO prod_order VALUES (" + item_id + ", " + order_id + ", " + item_amount +");";
-    std::string query5 = "UPDATE prod_order set quantity_ordered = quantity_ordered + " + item_amount + " WHERE order_id = " + order_id +" AND product_id = " + item_id;
+    std::string query1 = "SELECT order_id FROM cust_order WHERE order_id = " 
+        + std::to_string(order_id);
+    std::string query2 = "INSERT INTO cust_order VALUES (" + std::to_string(order_id) 
+        + ", " + order_type + ", " + std::to_string(customer_id) + ", Waiting to be Processed);";
+    std::string query3 = "SELECT order_id FROM prod_order WHERE order_id = " 
+        + std::to_string(order_id) +" AND product_id = " + std::to_string(item_id);
+    std::string query4 = "INSERT INTO prod_order VALUES (" + std::to_string(item_id) 
+        + ", " + std::to_string(order_id) + ", " + std::to_string(item_amount) +");";
+    std::string query5 = "UPDATE prod_order set quantity_ordered = quantity_ordered + " 
+        + std::to_string(item_amount) + " WHERE order_id = " + std::to_string(order_id) +" AND product_id = " + std::to_string(item_id);
     try
     {   // Checks if the order already exists
         SQLite::Database db(get_db_filepath());
@@ -350,12 +355,13 @@ bool add_item_to_order(std::string item_id, std::string item_amount, std::string
 }
 
 /// @brief 
-/// @param item_id 
-/// @param order_id 
-/// @return 
-bool remove_item_from_order(std::string item_id, std::string order_id)
+/// @param item_id The ID of the item as an integer
+/// @param order_id The ID of the order as an integer
+/// @return A bool representing the success of the function
+bool remove_item_from_order(int item_id, int order_id)
 {
-    std::string query1 = "DELETE FROM prod_order WHERE product_id = " + item_id + "order_id = "+ order_id;
+    std::string query1 = "DELETE FROM prod_order WHERE product_id = " 
+        + std::to_string(item_id) + "order_id = "+ std::to_string(order_id);
     try
     {
         SQLite::Database db(get_db_filepath());
@@ -368,18 +374,18 @@ bool remove_item_from_order(std::string item_id, std::string order_id)
         std::cout << "SQL failure: " << e.what() << std::endl;
     }
     return false;
-    
 }
 
 /// @brief 
-/// @param order_id 
-/// @return 
-bool view_order(std::string order_id)
+/// @param order_id The ID of the order as an integer
+/// @return A bool representing the success of the function
+bool view_order(int order_id)
 {
-    std::string query1 = "SELECT product_id, quantity_ordered FROM prod_order WHERE order_id = " + order_id;
+    std::string query1 = "SELECT product_id, quantity_ordered FROM prod_order WHERE order_id = " 
+        + std::to_string(order_id);
     try
     {
-        std::cout << "Order " << order_id << "Consists of " << std::endl;
+        std::cout << "Order " << std::to_string(order_id) << "Consists of " << std::endl;
         SQLite::Database db(get_db_filepath());
         SQLite::Statement view_order(db, query1);
         while(view_order.executeStep())
@@ -399,13 +405,15 @@ bool view_order(std::string order_id)
 }
 
 /// @brief 
-/// @param order_id 
-/// @param customer_id 
-/// @return 
-bool cancel_order(std::string order_id, std::string customer_id)
+/// @param order_id The ID of the order as an integer
+/// @param customer_id The ID of the customer as an integer
+/// @return A bool representing the success of the function
+bool cancel_order(int order_id, int customer_id)
 {
-    std::string query1 = "DELETE FROM prod_order WHERE order_id = " + order_id +" AND customer_id = " + customer_id;
-    std::string query2 = "DELETE FROM cust_order WHERE order_id = " + order_id +" AND customer_id = " + customer_id;
+    std::string query1 = "DELETE FROM prod_order WHERE order_id = " 
+        + std::to_string(order_id) +" AND customer_id = " + std::to_string(customer_id);
+    std::string query2 = "DELETE FROM cust_order WHERE order_id = " 
+        + std::to_string(order_id) +" AND customer_id = " + std::to_string(customer_id);
     try
     {
         SQLite::Database db(get_db_filepath());
@@ -424,12 +432,15 @@ bool cancel_order(std::string order_id, std::string customer_id)
 }
 
 /// @brief 
-/// @param order_id 
-/// @return 
-bool checkout_order(std::string order_id)
+/// @param order_id The ID of the order as an integer
+/// @return A bool representing the success of the function
+bool checkout_order(int order_id)
 {
-    std::string query1 = "SELECT sum(price * quantity_ordered) FROM product NATURAL JOIN (SELECT product_id, quantity_orderd FROM prod_order WHERE order_id = "+order_id+")";
-    std::string query2 = "UPDATE cust_order SET status = Completed WHERE order_id = " + order_id;
+    std::string query1 = "SELECT sum(price * quantity_ordered) FROM product "
+        "NATURAL JOIN (SELECT product_id, quantity_orderd FROM prod_order WHERE order_id = " 
+        + std::to_string(order_id) + ")";
+    std::string query2 = "UPDATE cust_order SET status = Completed WHERE order_id = " 
+        + std::to_string(order_id);
     try
     {
         SQLite::Database db(get_db_filepath());
@@ -452,78 +463,88 @@ bool checkout_order(std::string order_id)
 // Admin functions
 
 /// @brief 
-/// @return 
-std::string view_employee_info()
+/// @return A bool representing the success of the function
+bool view_all_orders()
 {
-    return std::string();
+    bool success = false;
+
+    // implement here
+
+    return success;
 }
 
 /// @brief 
-/// @return 
-std::string view_all_orders()
+/// @return A bool representing the success of the function
+bool view_all_employees()
 {
-    return std::string();
+    bool success = false;
+
+    // implement here
+
+    return success;
 }
 
 /// @brief 
-/// @param employee_id 
-/// @param name 
-/// @param address 
-/// @param hours_mod 
-/// @param wage 
-/// @param is_manager 
-/// @return 
-std::string update_employee_info(std::string employee_id, std::string name, std::string address, 
-    std::string hours_mod, std::string wage, bool is_manager)
+/// @param employee_id The ID of the employee as an integer
+/// @return A bool representing the success of the function
+bool remove_employee(int employee_id)
 {
-    return std::string();
+    bool success = false;
+
+    // implement here
+
+    return success;
+}
+
+/// @brief Updates an employee's info or adds a new employee if they don't exist
+/// @param employee_id The ID of the employee as an integer
+/// @param name The name of the employee as a string
+/// @param address The address of the employee as a string
+/// @param hours The employee's hours as an integer
+/// @param wage The wage of the employee as an integer
+/// @param is_manager The status of the employee as a bool
+/// @return A bool representing the success of the function
+bool update_employee_info(int employee_id, std::string name, std::string address, 
+    int hours, int wage, bool is_manager)
+{
+    bool success = false;
+
+    // implement here
+
+    return success;
 }
 
 /// @brief 
-/// @param employee_id 
-/// @param name 
-/// @param address 
-/// @param hours_mod 
-/// @param wage 
-/// @param is_manager 
-/// @return 
-std::string add_employee(std::string employee_id, std::string name, std::string address, 
-    std::string hours_mod, std::string wage, bool is_manager)
+/// @param product_type The type of the item as a string
+/// @param cost The cost of the item as an integer
+/// @param stock_amount The stock of the item as an integer
+/// @param product_name The name of the item as a string
+/// @return A bool representing the success of the function
+bool update_item_info(std::string product_type, int cost, 
+    int stock_amount, std::string product_name)
 {
-    return std::string();
+    bool success = false;
+
+    // implement here
+
+    return success;
 }
 
 /// @brief 
-/// @param employee_id 
-/// @return 
-std::string remove_employee(std::string employee_id)
+/// @param order_id The ID of the order as an integer
+/// @param customer_id The ID of the customer as an integer
+/// @param email The email of the customer as a string
+/// @param product_name The name of the item as a string
+/// @param quantity The quantity of the order as an integer
+/// @return A bool representing the success of the function
+bool update_order_info(int order_id, int customer_id, 
+    std::string email, std::string product_name, int quantity)
 {
-    return std::string();
-}
+    bool success = false;
 
-/// @brief 
-/// @param product_type 
-/// @param cost 
-/// @param stock_amount 
-/// @param product_name 
-/// @return 
-std::string update_item_info(std::string product_type, std::string cost, 
-    std::string stock_amount, std::string product_name)
-{
-    return std::string();
-}
+    // implement here
 
-/// @brief 
-/// @param order_id 
-/// @param customer_id 
-/// @param email 
-/// @param product_name 
-/// @param quantity 
-/// @return 
-std::string update_order_info(std::string order_id, std::string customer_id, 
-    std::string email, std::string product_name, std::string quantity)
-{
-    return std::string();
+    return success;
 }
 
 #endif

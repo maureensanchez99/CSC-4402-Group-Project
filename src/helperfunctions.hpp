@@ -1,7 +1,8 @@
 #ifndef HELPERFUNCTIONS_HPP
 #define HELPERFUNCTIONS_HPP
 
-/// @brief Retrieves the full path to the `plant_store` database on the current user's system
+/// \brief Retrieves the full path to the `plant_store`
+/// database on the current user's system
 /// @return A string containing the path to the `plant_store` database
 std::string get_db_filepath()
 {
@@ -127,24 +128,46 @@ void title_card()
     std::cout << generate_border() << std::endl << ascii_title << generate_border() << std::endl;
 }
 
-/// @brief
-/// @param num_string 
-/// @return 
-int convert_string_to_number(std::string num_string)
+/// @brief Prompts the user for a positive integer value
+/// @param prompt The prompt to be sent to the terminal
+/// \param msg The message to be returned upon hitting an invalid 
+/// input; by default, is set to request a positive integer
+/// @return The integer retrieved by the function
+int get_int(std::string prompt, 
+    std::string msg = "input. The ID must be a positive integer")
 {
-    if (num_string.empty())
+    int new_int;
+    std::string int_as_string;
+
+    while (true)
     {
-        return -2;
+        if (!prompt.empty()) // Display prompt as long as it exists
+        {
+            std::cout << prompt;
+        }
+        int_as_string = get_input(true);
+        
+        try // Try to convert the string to an int
+        {
+            new_int = std::stoi(int_as_string);
+        }
+        catch(const std::exception& e)
+        {
+            new_int = -1; // Set `new_int` to -1 upon stoi() fail
+        }
+
+        if (new_int > 0)
+        {
+            break; // If `new_int` is a positive integer, break & return
+        }        
+        else
+        {
+            invalid_msg(msg);
+            continue;
+        }
     }
-    try
-    {
-        return std::stoi(num_string);
-    }
-    catch(std::invalid_argument)
-    {
-        std::cout << "ERROR: Input must be a number." << std::endl;
-        return -1;
-    }
+
+    return new_int;
 }
 
 #endif
