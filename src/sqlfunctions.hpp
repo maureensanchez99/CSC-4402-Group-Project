@@ -303,41 +303,152 @@ bool find_an_item(int item_id)
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string add_item_to_current_order(int item_id)
+bool add_item_to_order(std::string item_id, std::string item_amount, std::string order_id, std::string order_type, std::string customer_id)
 {
-    return std::string();
+    std::string query1 = "SELECT order_id FROM cust_order WHERE order_id = " + order_id;
+    std::string query2 = "INSERT INTO cust_order VALUES (" + order_id + ", " + order_type + ", " + customer_id + ", Waiting to be Processed);";
+    std::string query3 = "SELECT order_id FROM prod_order WHERE order_id = " + order_id +" AND product_id = " + item_id;
+    std::string query4 = "INSERT INTO prod_order VALUES (" + item_id + ", " + order_id + ", " + item_amount +");";
+    std::string query5 = "UPDATE prod_order set quantity_ordered = quantity_ordered + " + item_amount + " WHERE order_id = " + order_id +" AND product_id = " + item_id;
+    try
+    {
+        //checks if the order already exists
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement check_exists(db, query1);
+        bool order_exists = false;
+        while (check_exists.executeStep())
+        {
+            std::string temp_val = check_exists.getColumn(0);
+            if (temp_val.empty())
+            {
+                SQLite::Statement cust_order_insertion(db, query2);
+            }
+        }
+
+        bool item_order_exists;
+        SQLite::Statement check_item_order_exists(db, query3);
+        while (check_item_order_exists.executeStep())
+        {
+            std::string temp_value = check_item_order_exists.getColumn(0);
+            if (temp_value.empty())
+            {
+                SQLite::Statement insertion(db, query4);
+            }
+            else
+            {
+                SQLite::Statement order_update(db, query5);
+            }
+        }
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
+    return false;
+    
 }
 
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string remove_item_from_current_order(int item_id)
+bool remove_item_from_order(std::string item_id, std::string order_id)
 {
-    return std::string();
+    std::string query1 = "DELETE FROM prod_order WHERE product_id = " + item_id + "order_id = "+ order_id;
+    try
+    {
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement delete_item(db, query1);
+        delete_item.exec();
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
+    return false;
+    
 }
 
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string view_current_order()
+bool view_order(std::string order_id)
 {
-    return std::string();
+    std::string query1 = "SELECT product_id, quantity_ordered FROM prod_order WHERE order_id = " + order_id;
+
+    try
+    {
+        std::cout << "Order " << order_id << "Consists of " << std::endl;
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement view_order(db, query1);
+        while(view_order.executeStep())
+        {
+            std::string product = view_order.getColumn(0);
+            std::string quantity = view_order.getColumn(1);
+            std::string output = quantity + " " + product;
+            std::cout << output << std::endl;
+        }
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
+    return false;
+    
 }
 
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string cancel_current_order()
+bool cancel_order(std::string order_id, std::string customer_id)
 {
-    return std::string();
+    std::string query1 = "DELETE FROM prod_order WHERE order_id = " + order_id +" AND customer_id = " + customer_id;
+    std::string query2 = "DELETE FROM cust_order WHERE order_id = " + order_id +" AND customer_id = " + customer_id;
+    try
+    {
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement delete1(db, query1);
+        SQLite::Statement delete2(db, query2);
+
+        delete1.exec();
+        delete2.exec();
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
+    return false;
+    
 }
 
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
 /// @return TODO: Add return description here
-std::string checkout_current_order()
+bool checkout_order(std::string order_id)
 {
-    return std::string();
+    std::string query1 = "SELECT sum(price * quantity_ordered) FROM product NATURAL JOIN (SELECT product_id, quantity_orderd FROM prod_order WHERE order_id = "+order_id+")";
+    std::string query2 = "UPDATE cust_order SET status = Completed WHERE order_id = " + order_id;
+    try
+    {
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement get_sum(db, query1);
+        std::string sum = std::to_string(get_sum.exec());
+
+        SQLite::Statement checkout(db, query2);
+        checkout.exec();
+
+        std::cout << "Checkout Complete: Your Order was $"+sum;
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
+    return false;
+    
 }
 
 // Admin functions

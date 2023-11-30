@@ -191,59 +191,67 @@ void display_main_menu(int login_type)
 
             case 3: // add item to current order
             {
+
                 std::cout << "Please enter the item id: ";
-                int product_id;
-                std::string product_id_string = get_input(true);
-                try
-                {
-                    product_id = std::stoi(product_id_string);
-                }
-                catch(std::invalid_argument)
-                {
-                    std::cout << "ERROR: your input must be a number" << std::endl;
-                    break;
-                }
-                add_item_to_current_order(product_id);
+                std::string product_id = get_input();
+
+                std::cout << "Please enter the item amount: ";
+                std::string item_amount = get_input();
+
+                std::cout << "Please enter the order id: ";
+                std::string order_id = get_input();
+
+                std::cout << "Please enter the order type: ";
+                std::string order_type = get_input();
+
+                std::cout << "Please enter the customer id: ";
+                std::string customer_id = get_input();
+
+                add_item_to_order(product_id, item_amount, order_id, order_type, customer_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
 
             case 4: // remove item from current order
             {
-                std::cout << "Please enter the item id: ";
-                int product_id;
-                std::string product_id_string = get_input(true);
-                try
-                {
-                    product_id = std::stoi(product_id_string);
-                }
-                catch(std::invalid_argument)
-                {
-                    std::cout << "ERROR: your input must be a number" << std::endl;
-                    break;
-                }
-                remove_item_from_current_order(product_id);
+                std::cout << "Please enter the order id: ";
+                std::string order_id = get_input();
+
+                std::cout << "Please enter the product id: ";
+                std::string product_id = get_input();
+
+                remove_item_from_order(product_id, order_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
 
             case 5: // view current order
             {
-                view_current_order();
+                std::cout << "Please enter the order id: ";
+                std::string order_id = get_input();
+                view_order(order_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
 
             case 6: // cancel current order
             {
-                cancel_current_order();
+                std::cout << "Please enter the order id: ";
+                std::string order_id = get_input();
+
+                std::cout << "Please enter the customer id: ";
+                std::string customer_id = get_input();
+                cancel_order(order_id, customer_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
 
             case 7: // checkout current order
             {
-                checkout_current_order();
+                std::cout << "Please enter the order id: ";
+                std::string order_id = get_input();
+
+                checkout_order(order_id);
                 std::cout << generate_border() << std::endl;
                 break;
             }
