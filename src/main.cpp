@@ -10,6 +10,7 @@
 // Source: https://github.com/SRombauts/SQLiteCpp/tree/sqlitecpp-release-3.3.1
 #include <SQLiteCpp/SQLiteCpp.h>
 
+#include "helperfunctions.hpp"
 #include "sqlfunctions.hpp"
 #include "userinterface.hpp"
 
@@ -34,7 +35,7 @@ int main()
     }
 
     title_card();
-    std::pair<int, std::string> user_info = display_login_menu();
+    std::pair<int, int> user_info = display_login_menu();
 
     if (user_info.first > 0)
     {

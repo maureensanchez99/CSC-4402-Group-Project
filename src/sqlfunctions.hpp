@@ -1,26 +1,32 @@
 #ifndef SQLFUNCTIONS_HPP
 #define SQLFUNCTIONS_HPP
 
-std::string get_db_filepath();
+std::string get_db_filepath(); // Re-defining function from main.cpp to be used here
 
-/// @brief TODO: Add overview text for this function here
-/// @param employee_login TODO: Add param description here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-std::string check_id(bool employee_login, std::string id)
+/// @brief Determines if a user's ID is valid or not
+/// \param employee_login A boolean value representing 
+/// if the user is logging in as an employee
+/// @param id An integer containing the user's ID number
+/// @return An std::pair of the user's status as a manager and their first name
+std::pair<bool, std::string> check_id(bool employee_login, int id)
 {
-    std::string return_val = std::string();
+    std::pair<bool, std::string> return_val = {false, std::string()};
 
     try
     {
         SQLite::Database db(get_db_filepath());
         if (employee_login)
         {
-            return_val = (std::string) db.execAndGet("SELECT name_first FROM employee WHERE employee_id = " + id);
+            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM employee WHERE employee_id = " + id);
+            std::string temp = db.execAndGet("SELECT manager FROM employee WHERE employee_id = " + id);
+            if (std::stoi(temp) == 1)
+            {
+                return_val.first = true;
+            }
         }
         else
         {
-            return_val = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + id);
+            return_val.second = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + id);
         }
     }
     catch (const std::exception& e) {} // If query fails, the ID is invalid
@@ -28,8 +34,7 @@ std::string check_id(bool employee_login, std::string id)
     return return_val;
 }
 
-//menu functions//
-
+// Regular menu functions
 
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
@@ -87,9 +92,7 @@ std::string checkout_current_order()
     return std::string();
 }
 
-
-//admin functions//
-
+// Admin functions
 
 /// @brief TODO: Add overview text for this function here
 /// @param id TODO: Add param description here
