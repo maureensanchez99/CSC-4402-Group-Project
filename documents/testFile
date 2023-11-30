@@ -1,0 +1,11 @@
+SELECT product_id, price FROM product WHERE (price < 35);
+
+SELECT name_first, name_last FROM employee WHERE (manager = TRUE);
+
+SELECT name_first, name_last FROM customer WHERE (member = TRUE);
+
+UPDATE cust_order SET status = 'Completed' WHERE (order_type = 'In-Person');
+SELECT order_id, status FROM cust_order WHERE NOT (status = 'Completed');
+
+UPDATE product SET price = price * 0.75 WHERE (price > 30);
+SELECT product_id, price FROM product WHERE (price > 30);
