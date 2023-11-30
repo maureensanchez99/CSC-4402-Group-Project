@@ -98,10 +98,10 @@ std::string get_input(bool is_inline = false)
 
 /// @brief Outputs a message prompting the user to try again after an invalid value
 /// @param value The type of invalid message; by default, is set to "input"
-/// \param add_border_start Boolean value determining if the function 
-/// should also output a border; by default, is set to "true" 
 /// \param add_border_end Boolean value determining if the function 
-/// should also output a border; by default, is set to "false" 
+/// should output a border after the message; by default, is set to "true" 
+/// \param add_border_start Boolean value determining if the function 
+/// should output a border before the message; by default, is set to "false" 
 void invalid_msg(std::string value = "input", 
     bool add_border_end = true, bool add_border_start = false)
 {
