@@ -1,8 +1,6 @@
 #ifndef SQLFUNCTIONS_HPP
 #define SQLFUNCTIONS_HPP
 
-std::string get_db_filepath(); // Re-defining function from main.cpp to be used here
-
 /// @brief Determines if a user's ID is valid or not
 /// \param employee_login A boolean value representing 
 /// if the user is logging in as an employee
@@ -36,10 +34,9 @@ std::pair<bool, std::string> check_id(bool employee_login, int id)
 
 // Regular menu functions
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-bool view_availabe_items()
+/// @brief 
+/// @return 
+bool view_available_items()
 {
     try
     {
@@ -50,84 +47,87 @@ bool view_availabe_items()
         SQLite::Statement query1(db, "SELECT product_id, price, name FROM product NATURAL JOIN plant WHERE product.product_id = plant.product_id");
         while(query1.executeStep())
         {
-           std::string id = query1.getColumn(0);
-           std::string price = query1.getColumn(1);
-           std::string name = query1.getColumn(2);
-           std::string output = "| "+id;
-           while (output.size() < 12)
-           {
-            output +=" ";
-           }
-           output += "| "+price;
-           while (output.size() < 29)
-           {
-            output +=" ";
-           }
-           output += "| "+name;
-           while (output.size() < 46)
-           {
-            output +=" ";
-           }
-           output +="|";
-           std::cout << output << std::endl;
+            std::string id = query1.getColumn(0);
+            std::string price = query1.getColumn(1);
+            std::string name = query1.getColumn(2);
+            std::string output = "| " + id;
+            while (output.size() < 12)
+            {
+                output += " ";
+            }
+            output += "| " + price;
+            while (output.size() < 29)
+            {
+                output +=" ";
+            }
+            output += "| "+ name;
+            while (output.size() < 46)
+            {
+                output +=" ";
+            }
+            output += "|";
+            std::cout << output << std::endl;
         }
         SQLite::Statement query2(db, "SELECT product_id, price, type FROM product NATURAL JOIN tool WHERE product.product_id = tool.product_id");
         while(query2.executeStep())
         {
-           std::string id = query2.getColumn(0);
-           std::string price = query2.getColumn(1);
-           std::string name = query2.getColumn(2);
-           std::string output = "| "+id;
-           while (output.size() < 12)
-           {
-            output +=" ";
-           }
-           output += "| "+price;
-           while (output.size() < 29)
-           {
-            output +=" ";
-           }
-           output += "| "+name;
-           while (output.size() < 46)
-           {
-            output +=" ";
-           }
-           output +="|";
-           std::cout << output << std::endl;
+            std::string id = query2.getColumn(0);
+            std::string price = query2.getColumn(1);
+            std::string name = query2.getColumn(2);
+            std::string output = "| " + id;
+            while (output.size() < 12)
+            {
+                output += " ";
+            }
+            output += "| " + price;
+            while (output.size() < 29)
+            {
+                output +=" ";
+            }
+            output += "| " + name;
+            while (output.size() < 46)
+            {
+                output += " ";
+            }
+            output += "|";
+            std::cout << output << std::endl;
         }
         SQLite::Statement query3(db, "SELECT product_id, price, name FROM product NATURAL JOIN seed WHERE product.product_id = seed.product_id");
         while(query3.executeStep())
         {
-           std::string id = query3.getColumn(0);
-           std::string price = query3.getColumn(1);
-           std::string name = query3.getColumn(2);
-           std::string output = "| "+id;
-           while (output.size() < 12)
-           {
-            output +=" ";
-           }
-           output += "| "+price;
-           while (output.size() < 29)
-           {
-            output +=" ";
-           }
-           output += "| "+name;
-           while (output.size() < 46)
-           {
-            output +=" ";
-           }
-           output +="|";
-           std::cout << output << std::endl;
+            std::string id = query3.getColumn(0);
+            std::string price = query3.getColumn(1);
+            std::string name = query3.getColumn(2);
+            std::string output = "| " + id;
+            while (output.size() < 12)
+            {
+                output +=" ";
+            }
+            output += "| " + price;
+            while (output.size() < 29)
+            {
+                output += " ";
+            }
+            output += "| " + name;
+            while (output.size() < 46)
+            {
+                output += " ";
+            }
+            output += "|";
+            std::cout << output << std::endl;
         }
         return true;
     }
-    catch (const std::exception& e) {std::cout << "SQL failure: " << e.what() << std::endl;}
+    catch (const std::exception& e) 
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
     return false;
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @param item_id 
+/// @return 
 bool find_an_item(int item_id)
 {
     try
@@ -146,43 +146,42 @@ bool find_an_item(int item_id)
                 std::string col6 = query.getColumn(5);
                 std::string col7 = query.getColumn(6);
                 std::string col8 = query.getColumn(7);
-                std::string output ="|"+col1;
-                //11 19 31 44 55 67 75
+                std::string output = "|" + col1;
                 while (output.size() < 5)
                 {
                     output += " ";
                 }
-                output +="|"+col2;
+                output += "|" + col2;
                 while (output.size() < 19)
                 {
                     output += " ";
                 }
-                output +="|"+col3;
+                output += "|" + col3;
                 while (output.size() < 34)
                 {
                     output += " ";
                 }
-                output +="|"+col4;
+                output += "|" + col4;
                 while (output.size() < 44)
                 {
                     output += " ";
                 }
-                output +="|"+col5;
+                output += "|" + col5;
                 while (output.size() < 59)
                 {
                     output += " ";
                 }
-                output +="|"+col6;
+                output += "|" + col6;
                 while (output.size() < 74)
                 {
                     output += " ";
                 }
-                output +="|"+col7;
+                output += "|" + col7;
                 while (output.size() < 89)
                 {
                     output += " ";
                 }
-                output +="|"+col8;
+                output += "|" + col8;
                 while (output.size() < 99)
                 {
                     output += " ";
@@ -201,22 +200,22 @@ bool find_an_item(int item_id)
                 std::string col2 = query.getColumn(1);
                 std::string col3 = query.getColumn(2);
                 std::string col4 = query.getColumn(3);
-                std::string output ="|"+col1;
+                std::string output = "|" + col1;
                 while (output.size() < 5)
                 {
                     output += " ";
                 }
-                output +="|"+col2;
+                output += "|" + col2;
                 while (output.size() < 19)
                 {
                     output += " ";
                 }
-                output +="|"+col3;
+                output += "|" + col3;
                 while (output.size() < 34)
                 {
                     output += " ";
                 }
-                output +="|"+col4;
+                output += "|"+ col4;
                 while (output.size() < 44)
                 {
                     output += " ";
@@ -228,7 +227,7 @@ bool find_an_item(int item_id)
         else if (item_id <= 9)
         {
             std::cout << "|ID  |Name      |Type       |Season   |Zone|Sunlight      |Water        |Humidity           |Price |" << std::endl
-                      << "----------------------------------------------------------------------------------------------------" << std::endl;
+            << "----------------------------------------------------------------------------------------------------" << std::endl;
             SQLite::Statement query(db, "Select * FROM seed NATURAL JOIN product WHERE seed.product_id = " + std::to_string(item_id));
             while (query.executeStep())
             {
@@ -241,48 +240,47 @@ bool find_an_item(int item_id)
                 std::string col7 = query.getColumn(6);
                 std::string col8 = query.getColumn(7);
                 std::string col9 = query.getColumn(8);
-                std::string output ="|"+col1;
-                //11 19 31 44 55 67 75
+                std::string output = "|"+ col1;
                 while (output.size() < 5)
                 {
                     output += " ";
                 }
-                output +="|"+col2;
+                output += "|"+ col2;
                 while (output.size() < 16)
                 {
                     output += " ";
                 }
-                output +="|"+col3;
+                output += "|" + col3;
                 while (output.size() < 28)
                 {
                     output += " ";
                 }
-                output +="|"+col4;
+                output += "|" + col4;
                 while (output.size() < 38)
                 {
                     output += " ";
                 }
-                output +="|"+col5;
+                output += "|" + col5;
                 while (output.size() < 43)
                 {
                     output += " ";
                 }
-                output +="|"+col6;
+                output += "|" + col6;
                 while (output.size() < 58)
                 {
                     output += " ";
                 }
-                output +="|"+col7;
+                output += "|" + col7;
                 while (output.size() < 72)
                 {
                     output += " ";
                 }
-                output +="|"+col8;
+                output += "|" + col8;
                 while (output.size() < 92)
                 {
                     output += " ";
                 }
-                output +="|"+col9;
+                output += "|" + col9;
                 while (output.size() < 99)
                 {
                     output += " ";
@@ -300,9 +298,13 @@ bool find_an_item(int item_id)
     return false;
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @param item_id 
+/// @param item_amount 
+/// @param order_id 
+/// @param order_type 
+/// @param customer_id 
+/// @return 
 bool add_item_to_order(std::string item_id, std::string item_amount, std::string order_id, std::string order_type, std::string customer_id)
 {
     std::string query1 = "SELECT order_id FROM cust_order WHERE order_id = " + order_id;
@@ -311,8 +313,7 @@ bool add_item_to_order(std::string item_id, std::string item_amount, std::string
     std::string query4 = "INSERT INTO prod_order VALUES (" + item_id + ", " + order_id + ", " + item_amount +");";
     std::string query5 = "UPDATE prod_order set quantity_ordered = quantity_ordered + " + item_amount + " WHERE order_id = " + order_id +" AND product_id = " + item_id;
     try
-    {
-        //checks if the order already exists
+    {   // Checks if the order already exists
         SQLite::Database db(get_db_filepath());
         SQLite::Statement check_exists(db, query1);
         bool order_exists = false;
@@ -346,12 +347,12 @@ bool add_item_to_order(std::string item_id, std::string item_amount, std::string
         std::cout << "SQL failure: " << e.what() << std::endl;
     }
     return false;
-    
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @param item_id 
+/// @param order_id 
+/// @return 
 bool remove_item_from_order(std::string item_id, std::string order_id)
 {
     std::string query1 = "DELETE FROM prod_order WHERE product_id = " + item_id + "order_id = "+ order_id;
@@ -370,13 +371,12 @@ bool remove_item_from_order(std::string item_id, std::string order_id)
     
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @param order_id 
+/// @return 
 bool view_order(std::string order_id)
 {
     std::string query1 = "SELECT product_id, quantity_ordered FROM prod_order WHERE order_id = " + order_id;
-
     try
     {
         std::cout << "Order " << order_id << "Consists of " << std::endl;
@@ -396,12 +396,12 @@ bool view_order(std::string order_id)
         std::cout << "SQL failure: " << e.what() << std::endl;
     }
     return false;
-    
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @param order_id 
+/// @param customer_id 
+/// @return 
 bool cancel_order(std::string order_id, std::string customer_id)
 {
     std::string query1 = "DELETE FROM prod_order WHERE order_id = " + order_id +" AND customer_id = " + customer_id;
@@ -420,13 +420,12 @@ bool cancel_order(std::string order_id, std::string customer_id)
     {
         std::cout << "SQL failure: " << e.what() << std::endl;
     }
-    return false;
-    
+    return false;   
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @param order_id 
+/// @return 
 bool checkout_order(std::string order_id)
 {
     std::string query1 = "SELECT sum(price * quantity_ordered) FROM product NATURAL JOIN (SELECT product_id, quantity_orderd FROM prod_order WHERE order_id = "+order_id+")";
@@ -448,63 +447,81 @@ bool checkout_order(std::string order_id)
         std::cout << "SQL failure: " << e.what() << std::endl;
     }
     return false;
-    
 }
 
 // Admin functions
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @return 
 std::string view_employee_info()
 {
     return std::string();
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
+/// @brief 
+/// @return 
 std::string view_all_orders()
 {
     return std::string();
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-std::string update_employee_info(int employee_id, std::string name, std::string address, int hours_mod, int wage, bool is_manager)
+/// @brief 
+/// @param employee_id 
+/// @param name 
+/// @param address 
+/// @param hours_mod 
+/// @param wage 
+/// @param is_manager 
+/// @return 
+std::string update_employee_info(std::string employee_id, std::string name, std::string address, 
+    std::string hours_mod, std::string wage, bool is_manager)
 {
     return std::string();
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-std::string add_employee (int employee_id, std::string name, std::string address, int hours_mod, int wage, bool is_manager)
+/// @brief 
+/// @param employee_id 
+/// @param name 
+/// @param address 
+/// @param hours_mod 
+/// @param wage 
+/// @param is_manager 
+/// @return 
+std::string add_employee(std::string employee_id, std::string name, std::string address, 
+    std::string hours_mod, std::string wage, bool is_manager)
 {
     return std::string();
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-std::string remove_employee(int employee_id)
+/// @brief 
+/// @param employee_id 
+/// @return 
+std::string remove_employee(std::string employee_id)
 {
     return std::string();
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-std::string update_item_info(std::string product_type, int cost, int stock_amount, std::string product_name)
+/// @brief 
+/// @param product_type 
+/// @param cost 
+/// @param stock_amount 
+/// @param product_name 
+/// @return 
+std::string update_item_info(std::string product_type, std::string cost, 
+    std::string stock_amount, std::string product_name)
 {
     return std::string();
 }
 
-/// @brief TODO: Add overview text for this function here
-/// @param id TODO: Add param description here
-/// @return TODO: Add return description here
-std::string update_order_info(int order_id, int customer_id, std::string email, std::string product_name, int quantity)
+/// @brief 
+/// @param order_id 
+/// @param customer_id 
+/// @param email 
+/// @param product_name 
+/// @param quantity 
+/// @return 
+std::string update_order_info(std::string order_id, std::string customer_id, 
+    std::string email, std::string product_name, std::string quantity)
 {
     return std::string();
 }

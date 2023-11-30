@@ -1,6 +1,16 @@
 #ifndef HELPERFUNCTIONS_HPP
 #define HELPERFUNCTIONS_HPP
 
+/// @brief Retrieves the full path to the `plant_store` database on the current user's system
+/// @return A string containing the path to the `plant_store` database
+std::string get_db_filepath()
+{
+    std::string current_file = std::source_location::current().file_name();
+    return current_file.substr(0, current_file.length() - 
+        std::string("src/helperfunctions.hpp").length()) + 
+        "database/plant_store.db";
+}
+
 /// @brief Generates a border of a set length out of '='
 /// \param length The length of the border to be 
 /// generated; this value is set to 100 by default
@@ -77,12 +87,25 @@ std::string get_input(bool is_inline = false)
     std::string input;
     if (!is_inline)
     {
-    std::cout << "> ";
+        std::cout << "> ";
     }
     getline(std::cin, input); // Reads input until a newline character is reached
 
     std::transform(input.begin(), input.end(), input.begin(), ::tolower); // Convert input to all lowercase
     return input;
+}
+
+/// @brief Outputs a message prompting the user to try again after an invalid value
+/// @param value The type of invalid message; by default, is set to "input"
+/// \param add_border Boolean value determining if the function 
+/// should also output a border; by default, is set to "true" 
+void invalid_msg(std::string value = "input", bool add_border = true)
+{
+    std::cout << "Invalid " + value + ". Please try again." << std::endl;
+    if (add_border)
+    {
+        std::cout << generate_border() << std::endl;
+    }
 }
 
 /// \brief Sends the name of the company (as ASCII art)
@@ -104,6 +127,9 @@ void title_card()
     std::cout << generate_border() << std::endl << ascii_title << generate_border() << std::endl;
 }
 
+/// @brief
+/// @param num_string 
+/// @return 
 int convert_string_to_number(std::string num_string)
 {
     if (num_string.empty())
@@ -116,7 +142,7 @@ int convert_string_to_number(std::string num_string)
     }
     catch(std::invalid_argument)
     {
-        std::cout << "ERROR: input must be a number" << std::endl;
+        std::cout << "ERROR: Input must be a number." << std::endl;
         return -1;
     }
 }

@@ -14,17 +14,9 @@
 #include "sqlfunctions.hpp"
 #include "userinterface.hpp"
 
-/// @brief Retrieves the full path to the `plant_store` database on the current user's system
-/// @return A string containing the path to the `plant_store` database
-std::string get_db_filepath()
-{
-    std::string current_file = std::source_location::current().file_name();
-    return current_file.substr(0, current_file.length() - std::string("src/main.cpp").length()) + "database/plant_store.db";
-}
-
 int main()
 {
-    try // Check database file can be accessed
+    try // Check that the db can be accessed; if not, quit program
     {
         SQLite::Database db(get_db_filepath());
     }
