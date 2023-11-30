@@ -104,4 +104,21 @@ void title_card()
     std::cout << generate_border() << std::endl << ascii_title << generate_border() << std::endl;
 }
 
+int convert_string_to_number(std::string num_string)
+{
+    if (num_string.empty())
+    {
+        return -2;
+    }
+    try
+    {
+        return std::stoi(num_string);
+    }
+    catch(std::invalid_argument)
+    {
+        std::cout << "ERROR: input must be a number" << std::endl;
+        return -1;
+    }
+}
+
 #endif
