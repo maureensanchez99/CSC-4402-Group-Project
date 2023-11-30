@@ -104,8 +104,7 @@ std::pair<int, int> display_login_menu()
 /// @param login_type An integer value representing the type of user accessing the menu
 void display_main_menu(int login_type)
 {
-    std::string input;
-    int input_as_int;
+    int input;
     bool loop_active = true;
     bool action_success = false;
     bool fall_trigger = false;
@@ -135,15 +134,15 @@ void display_main_menu(int login_type)
         std::cout << std::endl << "0] Exit the program"
         << std::endl << generate_border() << std::endl;
 
-        input = get_int(std::string(), "input");
+        input = get_int("> ", "input", true);
 
-        if (input_as_int > 7 && login_type != 3)
+        if (input > 7 && login_type != 3)
         {
             invalid_msg();
             continue;
         }
 
-        switch (input_as_int)
+        switch (input)
         {
             case 0: // Exit loop (& program)
             {
@@ -153,6 +152,7 @@ void display_main_menu(int login_type)
             case 1: // View all items
             {
                 action_success = view_available_items();
+                sleep(2); // Let the user view the info
                 break;
             }
             case 2: // Find a specific item
@@ -160,6 +160,7 @@ void display_main_menu(int login_type)
                 int product_id = get_int("Enter the item ID: ");
 
                 action_success = find_an_item(product_id);
+                sleep(2); // Let the user view the info
                 break;
             }
             case 3: // Add item to current order
@@ -191,7 +192,8 @@ void display_main_menu(int login_type)
                 std::cout << "Please enter the order type: ";
                 std::string order_type = get_input(true);
 
-                action_success = add_item_to_order(product_id, item_amount, order_id, order_type, customer_id);
+                action_success = add_item_to_order(product_id, item_amount, 
+                    order_id, order_type, customer_id);
                 break;
             }
             case 4: // Remove item from current order
@@ -207,6 +209,7 @@ void display_main_menu(int login_type)
                 int order_id = get_int("Enter the order ID: ");
 
                 action_success = view_order(order_id);
+                sleep(2); // Let the user view the info
                 break;
             }
             case 6: // Cancel current order
@@ -245,11 +248,13 @@ void display_main_menu(int login_type)
             case 8: // View all orders
             {
                 action_success = view_all_orders();
+                sleep(2); // Let the user view the info
                 break;
             }
             case 9: // View all employees' info
             {
                 action_success = view_all_employees();
+                sleep(2); // Let the user view the info
                 break;
             }
             case 10: // Remove an employee
@@ -383,7 +388,8 @@ void display_main_menu(int login_type)
                     }
                 }
 
-                action_success = update_employee_info(employee_id, name, address, hours, wage, is_manager);
+                action_success = update_employee_info(employee_id, name, address, 
+                    hours, wage, is_manager);
                 break;
             }
             case 13: // Update the details of an item
@@ -413,13 +419,14 @@ void display_main_menu(int login_type)
 
                 int item_amount = get_int("Enter the amount of items: ");
 
-                action_success = update_order_info(order_id, customer_id, email_address, item_name, item_amount);
+                action_success = update_order_info(order_id, customer_id, 
+                    email_address, item_name, item_amount);
                 break;
             }
             default: // Invalid input
             {
                 invalid_msg();
-                break;
+                continue; // Skip to the next loop iteration
             }
         }
         
@@ -436,7 +443,7 @@ void display_main_menu(int login_type)
             }
             std::cout << "Now returning to main menu."
             << std::endl << generate_border() << std::endl;
-            sleep(1);
+            sleep(2);
         }
         else // If the loop will end, output an exit message
         {

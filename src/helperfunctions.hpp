@@ -98,12 +98,19 @@ std::string get_input(bool is_inline = false)
 
 /// @brief Outputs a message prompting the user to try again after an invalid value
 /// @param value The type of invalid message; by default, is set to "input"
-/// \param add_border Boolean value determining if the function 
+/// \param add_border_start Boolean value determining if the function 
 /// should also output a border; by default, is set to "true" 
-void invalid_msg(std::string value = "input", bool add_border = true)
+/// \param add_border_end Boolean value determining if the function 
+/// should also output a border; by default, is set to "false" 
+void invalid_msg(std::string value = "input", 
+    bool add_border_end = true, bool add_border_start = false)
 {
+    if (add_border_start)
+    {
+        std::cout << generate_border() << std::endl;
+    }
     std::cout << "Invalid " + value + ". Please try again." << std::endl;
-    if (add_border)
+    if (add_border_end)
     {
         std::cout << generate_border() << std::endl;
     }
@@ -132,9 +139,12 @@ void title_card()
 /// @param prompt The prompt to be sent to the terminal
 /// \param msg The message to be returned upon hitting an invalid 
 /// input; by default, is set to request a positive integer
+/// \param skip_loop Bool representing if the retry loop should be 
+/// skipped; by default, is set to false
 /// @return The integer retrieved by the function
 int get_int(std::string prompt, 
-    std::string msg = "input. The ID must be a positive integer")
+    std::string msg = "input. The ID must be a positive integer",
+    bool skip_loop = false)
 {
     int new_int;
     std::string int_as_string;
@@ -156,13 +166,13 @@ int get_int(std::string prompt,
             new_int = -1; // Set `new_int` to -1 upon stoi() fail
         }
 
-        if (new_int > 0)
+        if (new_int > -1 || skip_loop)
         {
             break; // If `new_int` is a positive integer, break & return
         }        
         else
         {
-            invalid_msg(msg);
+            invalid_msg(msg, false);
             continue;
         }
     }
