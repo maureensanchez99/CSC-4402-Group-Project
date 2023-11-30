@@ -14,8 +14,8 @@
 #include "sqlfunctions.hpp"
 #include "userinterface.hpp"
 
-/// @brief TODO: Add overview text for this function here
-/// @return TODO: Add return description here
+/// @brief Retrieves the full path to the `plant_store` database on the current user's system
+/// @return A string containing the path to the `plant_store` database
 std::string get_db_filepath()
 {
     std::string current_file = std::source_location::current().file_name();
