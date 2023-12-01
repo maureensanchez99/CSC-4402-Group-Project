@@ -146,47 +146,10 @@ bool find_an_item(int item_id)
                 std::string col6 = query.getColumn(5);
                 std::string col7 = query.getColumn(6);
                 std::string col8 = query.getColumn(7);
-                std::string output = "|" + col1;
-                while (output.size() < 5)
-                {
-                    output += " ";
-                }
-                output += "|" + col2;
-                while (output.size() < 19)
-                {
-                    output += " ";
-                }
-                output += "|" + col3;
-                while (output.size() < 34)
-                {
-                    output += " ";
-                }
-                output += "|" + col4;
-                while (output.size() < 44)
-                {
-                    output += " ";
-                }
-                output += "|" + col5;
-                while (output.size() < 59)
-                {
-                    output += " ";
-                }
-                output += "|" + col6;
-                while (output.size() < 74)
-                {
-                    output += " ";
-                }
-                output += "|" + col7;
-                while (output.size() < 89)
-                {
-                    output += " ";
-                }
-                output += "|" + col8;
-                while (output.size() < 99)
-                {
-                    output += " ";
-                }
-                output += "|";
+                
+                std::vector<int> col_sizes = {5, 15, 15, 10, 20, 10, 20, 7};
+                std::vector<std::string> row_vec = {col1, col2, col3, col4, col5, col6, col7, col8};
+                std::string output = generate_table_row(row_vec, col_sizes);
                 std::cout << output << std::endl;
             }
         }
