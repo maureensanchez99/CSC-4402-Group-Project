@@ -500,8 +500,16 @@ bool view_all_employees()
 /// @return A bool representing the success of the function
 bool remove_employee(int employee_id)
 {
-    // implement here
-
+    try
+    {
+        SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
+        db.exec("DELETE FROM employee WHERE employee_id = " + std::to_string(employee_id));
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
     return false;
 }
 
