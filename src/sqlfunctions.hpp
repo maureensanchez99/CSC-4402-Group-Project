@@ -34,7 +34,7 @@ std::pair<bool, std::string> check_id(bool employee_login, std::string id)
 
 // Regular menu functions
 
-/// @brief 
+/// @brief Returns a table of all items from the database
 /// @return A bool representing the success of the function
 bool view_available_items()
 {
@@ -89,7 +89,7 @@ bool view_available_items()
     return false;
 }
 
-/// @brief 
+/// @brief Returns all information about an item in the database
 /// @param item_id The ID of the item as an integer
 /// @return A bool representing the success of the function
 bool find_an_item(int item_id)
@@ -169,7 +169,7 @@ bool find_an_item(int item_id)
     return false;
 }
 
-/// @brief 
+/// @brief Adds an item to an order in the database
 /// @param item_id The ID of the item as an integer
 /// @param item_amount The amount of the item as an integer
 /// @param order_id The ID of the order as an integer
@@ -225,7 +225,7 @@ bool add_item_to_order(int item_id, int item_amount, int order_id, std::string o
     return false;
 }
 
-/// @brief 
+/// @brief Removes an item from an order in the database
 /// @param item_id The ID of the item as an integer
 /// @param order_id The ID of the order as an integer
 /// @return A bool representing the success of the function
@@ -247,7 +247,7 @@ bool remove_item_from_order(int item_id, int order_id)
     return false;
 }
 
-/// @brief 
+/// @brief Views an order in the database
 /// @param order_id The ID of the order as an integer
 /// @return A bool representing the success of the function
 bool view_order(int order_id)
@@ -281,7 +281,7 @@ bool view_order(int order_id)
     return false;
 }
 
-/// @brief 
+/// @brief Cancels an order in the database
 /// @param order_id The ID of the order as an integer
 /// @param customer_id The ID of the customer as an integer
 /// @return A bool representing the success of the function
@@ -308,7 +308,7 @@ bool cancel_order(int order_id, int customer_id)
     return false;   
 }
 
-/// @brief 
+/// @brief Completes an order in the database and sends the sum to the terminal
 /// @param order_id The ID of the order as an integer
 /// @return A bool representing the success of the function
 bool checkout_order(int order_id)
