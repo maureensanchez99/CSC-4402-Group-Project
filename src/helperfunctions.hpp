@@ -183,23 +183,21 @@ int get_int(std::string prompt,
 /// @brief Formats SQL table output into correct string format
 /// @param items A vector of strings containg each item in all columns for a row
 /// @return Returns a vector of strings in the format of a table
-std::string generate_table_row(std::vector<std::string> items)
+std::string generate_table_row(std::vector<std::string> items, std::vector<int> column_sizes)
 {
-	std::string output = "| "  + items.at(0) + " | ";
-	for (int i = 1; i < items.size(); ++i)
+    if (column_sizes.size() != items.size())
+        return "Error: item_count and column_sizes_count mismatch";
+	std::string output;
+	for (int i = 0; i < items.size(); ++i)
 	{
-		int start_size = output.size();
-		output += items.at(i);
-		for (int j = output.size(); j < start_size+10; ++j)
+		std::string temp = "| " + items.at(i);
+		while (temp.size() < column_sizes.at(i)-1)
 		{
-            if (output.size() >= 99)
-            {
-                return output + "|";
-            }
-			output += " ";
+			temp += " ";
 		}
-		output += " | ";
+		output += temp;
 	}
+	output += " |";
     return output;
 }
 
