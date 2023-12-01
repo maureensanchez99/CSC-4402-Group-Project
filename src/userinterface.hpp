@@ -293,7 +293,7 @@ void display_main_menu(int login_type)
                 int employee_id;
                 std::pair<std::string, std::string> name;
                 std::vector<std::string> address;
-                bool is_manager;
+                std::string is_manager;
                 bool fall_triggered = false;
 
                 while (true) // Set the employee's ID
@@ -411,12 +411,12 @@ void display_main_menu(int login_type)
 
                     if (is_manager_str == "Y" || is_manager_str == "y") 
                     {
-                        is_manager = true;
+                        is_manager = "1";
                         break;
                     }
                     else if (is_manager_str == "n" || is_manager_str == "n") 
                     {
-                        is_manager = false;
+                        is_manager = "0";
                         break;
                     }
                     else 
@@ -464,7 +464,7 @@ void display_main_menu(int login_type)
                 int customer_id;
                 std::pair<std::string, std::string> name;
                 std::vector<std::string> address;
-                bool is_member;
+                std::string is_member;
                 bool fall_triggered = false;
 
                 while (true) // Set the customer's ID
@@ -578,12 +578,12 @@ void display_main_menu(int login_type)
 
                     if (is_member_str == "Y" || is_member_str == "y") 
                     {
-                        is_member = true;
+                        is_member = "1";
                         break;
                     }
                     else if (is_member_str == "n" || is_member_str == "n") 
                     {
-                        is_member = false;
+                        is_member = "0";
                         break;
                     }
                     else 

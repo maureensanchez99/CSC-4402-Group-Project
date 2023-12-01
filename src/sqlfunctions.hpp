@@ -27,7 +27,7 @@ std::pair<bool, std::string> check_id(bool employee_login, std::string id)
             return_val.second = (std::string) db.execAndGet("SELECT name_first FROM customer WHERE customer_id = " + id);
         }
     }
-    catch (const std::exception& e) {} // If query fails, the ID is invalid
+    catch (const std::exception& e) {} // If query fails, the ID is invalid, so ignore the catch
 
     return return_val;
 }
@@ -439,41 +439,49 @@ bool remove_employee(int employee_id)
 /// @param hours The employee's hours as an integer
 /// @param wage The wage of the employee as an integer
 /// @param store_id The ID of the employee's store as an integer
-/// @param is_manager The status of the employee as a bool
+/// @param is_manager The status of the employee as a string
 /// @param is_new Showing if the employee should be added or modified as a bool
 /// @return A bool representing the success of the function
 bool update_employee_info(int employee_id, std::pair<std::string, std::string> name, 
     std::vector<std::string> address, int hours, int wage, int store_id, 
-    bool is_manager, bool is_new)
+    std::string is_manager, bool is_new)
 {
-    std::string manager;
-    if (is_manager) // Converting manager bool to an int
-    {
-        manager = "1";
-    }
-    else
-    {
-        manager = "0";
-    }
-
-    if (address.size() == 5) // Make sure there's a value to insert for the apt value
-    {
-        // address.insert();
-    }
-
     try // Running the query
     {
         SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
-        if (is_new)
+        if (is_new && address.size() == 6) // use INSERT query
         {
             db.exec("INSERT INTO employee VALUES ('" + std::to_string(employee_id) + "', '" 
                 + name.first + "', '" + name.second + "', '" + address.at(0) + "', '" + address.at(1) + "', '" 
                 + address.at(2) + "', '" + address.at(3) + "', '" + address.at(4) + "', '" + address.at(5) + "', '" 
-                + std::to_string(hours) + "', '" + std::to_string(wage) + "', '" + manager + "', '" + std::to_string(store_id) + "')");
+                + std::to_string(hours) + "', '" + std::to_string(wage) + "', '" + is_manager + "', '" 
+                + std::to_string(store_id) + "')");
         }
-        else
+        else if (is_new) // use NULL for apt_num because it was optional
         {
-            // to be added
+            db.exec("INSERT INTO employee VALUES ('" + std::to_string(employee_id) + "', '" 
+                + name.first + "', '" + name.second + "', '" + address.at(0) + "', '" + address.at(1) 
+                + "', NULL, ', '" + address.at(2) + "', '" + address.at(3) + "', '" + address.at(4) + "', '" 
+                + std::to_string(hours) + "', '" + std::to_string(wage) + "', '" + is_manager + "', '" 
+                + std::to_string(store_id) + "')");
+        }
+        else if (address.size() == 6) // use UPDATE query
+        {
+            db.exec("UPDATE employee SET name_first = " + name.first + ", name_last = " + name.second 
+                + ", street_number = " + address.at(0) + ", street_name = " + address.at(1) 
+                + ", apt_number = " + address.at(2) + ", city = " + address.at(3) + ", state = " 
+                + address.at(4) + ", zip = " + address.at(5) + ", hours = " + std::to_string(hours)
+                + ", wage = " + std::to_string(wage) + ", manager = " + is_manager + ", store_id = " 
+                + std::to_string(store_id) + " WHERE employee_id = " + std::to_string(employee_id));
+        }
+        else // use NULL for apt_num because it was optional
+        {
+            db.exec("UPDATE employee SET name_first = " + name.first + ", name_last = " + name.second 
+                + ", street_number = " + address.at(0) + ", street_name = " + address.at(1) 
+                + ", apt_number = NULL, city = " + address.at(2) + ", state = " + address.at(3) 
+                + ", zip = " + address.at(4) + ", hours = " + std::to_string(hours) + ", wage = " 
+                + std::to_string(wage) + ", manager = " + is_manager + ", store_id = " 
+                + std::to_string(store_id) + " WHERE employee_id = " + std::to_string(employee_id));
         }
         return true;
     }
@@ -506,14 +514,51 @@ bool remove_customer(int customer_id)
 /// @param customer_id The ID of the customer as an integer
 /// @param name The name of the customer as a pair of strings
 /// @param address The address of the customer as a vector of strings
-/// @param is_member The membership status of the customer as a bool
+/// @param is_member The membership status of the customer as a string
 /// @param is_new Showing if the customer should be added or modified as a bool
 /// @return A bool representing the success of the function
 bool update_customer_info(int customer_id, std::pair<std::string, std::string> name, 
-    std::vector<std::string> address, bool is_member, bool is_new)
+    std::vector<std::string> address, std::string is_member, bool is_new)
 {
-    // implement here
-
+    try // Running the query
+    {
+        SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
+        if (is_new && address.size() == 6) // use INSERT query
+        {
+            db.exec("INSERT INTO customer VALUES ('" + std::to_string(customer_id) + "', '" 
+                + name.first + "', '" + name.second + "', '" + address.at(0) + "', '"
+                + address.at(1) + "', '" + address.at(2) + "', '" + address.at(3) + "', '" 
+                + address.at(4) + "', '" + address.at(5) + "', '" + is_member + "')");
+        }
+        else if (is_new) // use NULL for apt_num because it was optional
+        {
+            db.exec("INSERT INTO customer VALUES ('" + std::to_string(customer_id) + "', '" 
+                + name.first + "', '" + name.second + "', '" + address.at(0) + "', '" 
+                + address.at(1) + "', NULL, ', '" + address.at(2) + "', '" 
+                + address.at(3) + "', '" + address.at(4) + "', '" + is_member + "')");
+        }
+        else if (address.size() == 6) // use UPDATE query
+        {
+            db.exec("UPDATE customer SET name_first = " + name.first + ", name_last = " + name.second 
+                + ", street_number = " + address.at(0) + ", street_name = " + address.at(1) 
+                + ", apt_number = " + address.at(2) + ", city = " + address.at(3) + ", state = " 
+                + address.at(4) + ", zip = " + address.at(5) + ", member = " 
+                + is_member + " WHERE customer_id = " + std::to_string(customer_id));
+        }
+        else // use NULL for apt_num because it was optional
+        {
+            db.exec("UPDATE customer SET name_first = " + name.first + ", name_last = " + name.second 
+                + ", street_number = " + address.at(0) + ", street_name = " + address.at(1) 
+                + ", apt_number = NULL, city = " + address.at(2) + ", state = " 
+                + address.at(3) + ", zip = " + address.at(4) + ", member = " 
+                + is_member + " WHERE customer_id = " + std::to_string(customer_id));
+        }
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
     return false;
 }
 
