@@ -479,7 +479,7 @@ bool view_all_orders()
         {
             for (int i = 0; i < 6; i++) // get all 6 columns
             {
-                row_result.insert(row_result.end(), std::move(query.getColumn(i)));
+                row_result.insert(row_result.end(), query.getColumn(i));
             }
             std::cout << generate_table_row(row_result, column_widths) << std::endl;
             row_result.clear();
@@ -497,8 +497,28 @@ bool view_all_orders()
 /// @return A bool representing the success of the function
 bool view_all_employees()
 {
-    // implement here
-
+    try
+    {
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement query(db, "SELECT * FROM employee");
+        std::vector<std::string> row_result;
+        std::vector<int> column_widths = {5, 15, 15, 10, 20, 5, 20, 20, 10, 5, 5, 5, 5};
+        
+        while (query.executeStep())
+        {
+            for (int i = 0; i < 13; i++) // get all 13 columns
+            {
+                row_result.insert(row_result.end(), query.getColumn(i));
+            }
+            std::cout << generate_table_row(row_result, column_widths) << std::endl;
+            row_result.clear();
+        }
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
     return false;
 }
 
