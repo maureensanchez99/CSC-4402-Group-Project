@@ -429,83 +429,60 @@ bool checkout_order(int order_id)
 /// @return A bool representing the success of the function
 bool view_all_orders()
 {
-    bool success = false;
-
     try
     {
         SQLite::Database db(get_db_filepath());
-        SQLite::Statement query(db, "SELECT * FROM cust_order");
+        SQLite::Statement query(db, "SELECT order_id, order_type, customer_id, "
+        "status, product_id, quantity_ordered FROM prod_order NATURAL JOIN "
+        "cust_order ORDER BY order_id, product_id");
+        std::vector<std::string> row_result;
+        std::vector<int> column_widths = {5, 15, 5, 25, 5, 5};
+        
         while (query.executeStep())
         {
-            std::string col1 = query.getColumn(0);
-            std::string col2 = query.getColumn(1);
-            std::string col3 = query.getColumn(2);
-            std::string col4 = query.getColumn(3);
-            std::string col5 = query.getColumn(4);
-            std::string col6 = query.getColumn(5);
-            std::string col7 = query.getColumn(6);
-            std::string col8 = query.getColumn(7);
-            std::string output = "|" + col1;
-            while (output.size() < 5)
+            for (int i = 0; i < 6; i++) // get all 6 columns
             {
-                output += " ";
+                row_result.insert(row_result.end(), query.getColumn(i));
             }
-            output += "|" + col2;
-            while (output.size() < 19)
-            {
-                output += " ";
-            }
-            output += "|" + col3;
-            while (output.size() < 34)
-            {
-                output += " ";
-            }
-            output += "|" + col4;
-            while (output.size() < 44)
-            {
-                output += " ";
-            }
-            output += "|" + col5;
-            while (output.size() < 59)
-            {
-                output += " ";
-            }
-            output += "|" + col6;
-            while (output.size() < 74)
-            {
-                output += " ";
-            }
-            output += "|" + col7;
-            while (output.size() < 89)
-            {
-                output += " ";
-            }
-            output += "|" + col8;
-            while (output.size() < 99)
-            {
-                output += " ";
-            }
-            output += "|";
-            std::cout << output << std::endl;
+            std::cout << generate_table_row(row_result, column_widths) << std::endl;
+            row_result.clear();
         }
+        return true;
     }
     catch(const std::exception& e)
     {
         std::cout << "SQL failure: " << e.what() << std::endl;
     }
-
-    return success;
+    return false;
 }
 
 /// @brief 
 /// @return A bool representing the success of the function
 bool view_all_employees()
 {
-    bool success = false;
-
-    // implement here
-
-    return success;
+    try
+    {
+        SQLite::Database db(get_db_filepath());
+        SQLite::Statement query(db, "SELECT * FROM employee");
+        std::vector<std::string> row_result;
+        std::vector<int> column_widths = {5, 15, 15, 10, 20, 5, 20, 20, 10, 5, 5, 5, 5};
+        
+        while (query.executeStep())
+        {
+            for (int i = 0; i < 13; i++) // get all 13 columns
+            {
+                row_result.insert(row_result.end(), query.getColumn(i));
+            }
+            std::cout << generate_table_row(row_result, column_widths) << std::endl;
+            row_result.clear();
+        }
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
+    return false;
 }
 
 /// @brief 
@@ -513,11 +490,9 @@ bool view_all_employees()
 /// @return A bool representing the success of the function
 bool remove_employee(int employee_id)
 {
-    bool success = false;
-
     // implement here
 
-    return success;
+    return false;
 }
 
 /// @brief Updates an employee's info or adds a new employee if they don't exist
@@ -531,11 +506,9 @@ bool remove_employee(int employee_id)
 bool update_employee_info(int employee_id, std::string name, std::string address, 
     int hours, int wage, bool is_manager)
 {
-    bool success = false;
-
     // implement here
 
-    return success;
+    return false;
 }
 
 /// @brief 
@@ -547,11 +520,9 @@ bool update_employee_info(int employee_id, std::string name, std::string address
 bool update_item_info(std::string product_type, int cost, 
     int stock_amount, std::string product_name)
 {
-    bool success = false;
-
     // implement here
 
-    return success;
+    return false;
 }
 
 /// @brief 
@@ -564,11 +535,9 @@ bool update_item_info(std::string product_type, int cost,
 bool update_order_info(int order_id, int customer_id, 
     std::string email, std::string product_name, int quantity)
 {
-    bool success = false;
-
     // implement here
 
-    return success;
+    return false;
 }
 
 #endif
