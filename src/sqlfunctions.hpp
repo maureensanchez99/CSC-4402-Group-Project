@@ -355,16 +355,21 @@ bool view_all_orders()
         "status, product_id, quantity_ordered FROM prod_order NATURAL JOIN "
         "cust_order ORDER BY order_id, product_id");
         std::vector<std::string> row_result;
-        std::vector<int> column_widths = {5, 15, 5, 25, 5, 5};
+        std::vector<int> column_widths = {12, 14, 15, 27, 14, 19};
         
+        row_result = {"order_id", "order_type", "customer_id", 
+            "status", "product_id", "quantity_ordered"};
+        std::cout << generate_table_row(row_result, column_widths) << std::endl;
+        std::cout << generate_border(97, '-') << std::endl;
+
         while (query.executeStep())
         {
+            row_result.clear();
             for (int i = 0; i < 6; i++) // get all 6 columns
             {
                 row_result.insert(row_result.end(), query.getColumn(i));
             }
             std::cout << generate_table_row(row_result, column_widths) << std::endl;
-            row_result.clear();
         }
         return true;
     }
@@ -384,16 +389,21 @@ bool view_all_employees()
         SQLite::Database db(get_db_filepath());
         SQLite::Statement query(db, "SELECT * FROM employee");
         std::vector<std::string> row_result;
-        std::vector<int> column_widths = {5, 15, 15, 10, 20, 5, 20, 20, 10, 5, 5, 5, 5};
+        std::vector<int> column_widths = {15, 14, 14, 17, 23, 14, 17, 15, 9, 9, 8, 11, 11};
         
+        row_result = {"employee_id", "name_first", "name_last", "street_number", "street_name", 
+            "apt_number", "city", "state", "zip", "hours", "wage", "manager", "store_id"};
+        std::cout << generate_table_row(row_result, column_widths) << std::endl;
+        std::cout << generate_border(166, '-') << std::endl;
+
         while (query.executeStep())
         {
+            row_result.clear();
             for (int i = 0; i < 13; i++) // get all 13 columns
             {
                 row_result.insert(row_result.end(), query.getColumn(i));
             }
             std::cout << generate_table_row(row_result, column_widths) << std::endl;
-            row_result.clear();
         }
         return true;
     }
@@ -409,8 +419,16 @@ bool view_all_employees()
 /// @return A bool representing the success of the function
 bool remove_employee(int employee_id)
 {
-    // implement here
-
+    try
+    {
+        SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
+        db.exec("DELETE FROM employee WHERE employee_id = " + std::to_string(employee_id));
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
     return false;
 }
 
