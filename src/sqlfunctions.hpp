@@ -41,8 +41,8 @@ bool view_available_items()
     try
     {
         std::cout << "All Items & Prices:" << std::endl
-        << "| Item ID   | Item Price     | Item Name      |" << std::endl //|10 char|15 char|//
-        << "-----------------------------------------------" << std::endl;
+        << "|ID | Price | Item Name         |" << std::endl //|10 char|15 char|//
+        << "---------------------------------" << std::endl;
         SQLite::Database db(get_db_filepath());
         SQLite::Statement query1(db, "SELECT product_id, price, name FROM product NATURAL JOIN plant WHERE product.product_id = plant.product_id");
         while(query1.executeStep())
@@ -50,22 +50,10 @@ bool view_available_items()
             std::string id = query1.getColumn(0);
             std::string price = query1.getColumn(1);
             std::string name = query1.getColumn(2);
-            std::string output = "| " + id;
-            while (output.size() < 12)
-            {
-                output += " ";
-            }
-            output += "| " + price;
-            while (output.size() < 29)
-            {
-                output +=" ";
-            }
-            output += "| "+ name;
-            while (output.size() < 46)
-            {
-                output +=" ";
-            }
-            output += "|";
+            
+            std::vector<int> col_sizes = {5, 9, 20};
+            std::vector<std::string> row_vec = {id, price, name};
+            std::string output = generate_table_row(row_vec, col_sizes);
             std::cout << output << std::endl;
         }
         SQLite::Statement query2(db, "SELECT product_id, price, type FROM product NATURAL JOIN tool WHERE product.product_id = tool.product_id");
@@ -74,22 +62,10 @@ bool view_available_items()
             std::string id = query2.getColumn(0);
             std::string price = query2.getColumn(1);
             std::string name = query2.getColumn(2);
-            std::string output = "| " + id;
-            while (output.size() < 12)
-            {
-                output += " ";
-            }
-            output += "| " + price;
-            while (output.size() < 29)
-            {
-                output +=" ";
-            }
-            output += "| " + name;
-            while (output.size() < 46)
-            {
-                output += " ";
-            }
-            output += "|";
+
+            std::vector<int> col_sizes = {5, 9, 20};
+            std::vector<std::string> row_vec = {id, price, name};
+            std::string output = generate_table_row(row_vec, col_sizes);
             std::cout << output << std::endl;
         }
         SQLite::Statement query3(db, "SELECT product_id, price, name FROM product NATURAL JOIN seed WHERE product.product_id = seed.product_id");
@@ -98,22 +74,10 @@ bool view_available_items()
             std::string id = query3.getColumn(0);
             std::string price = query3.getColumn(1);
             std::string name = query3.getColumn(2);
-            std::string output = "| " + id;
-            while (output.size() < 12)
-            {
-                output +=" ";
-            }
-            output += "| " + price;
-            while (output.size() < 29)
-            {
-                output += " ";
-            }
-            output += "| " + name;
-            while (output.size() < 46)
-            {
-                output += " ";
-            }
-            output += "|";
+
+            std::vector<int> col_sizes = {5, 9, 20};
+            std::vector<std::string> row_vec = {id, price, name};
+            std::string output = generate_table_row(row_vec, col_sizes);
             std::cout << output << std::endl;
         }
         return true;
@@ -134,7 +98,9 @@ bool find_an_item(int item_id)
     {
         SQLite::Database db(get_db_filepath());
         if (item_id <= 3)
-        {
+        {   std::cout << "|ID | Name        | Type        | Size   | Sunlight         | Water  | Humidity         | Price |" << std::endl
+            << "-------------------------------------------------------------------------------------------------" << std::endl;
+            //| 1 | Pothos      | House Plant | Medium | Partial Shade    | Daily  | Low Humidity     | 10.99 |
             SQLite::Statement query(db, "SELECT * FROM plant NATURAL JOIN product WHERE plant.product_id = " + std::to_string(item_id));
             while (query.executeStep())
             {
@@ -155,7 +121,8 @@ bool find_an_item(int item_id)
         }
         else if (item_id <= 6)
         {
-            std::cout << "|ID  |Type         |Brand         | Price   |" << std::endl;
+            std::cout << "|ID | Type        | Brand         | Price |" << std::endl
+            << "-------------------------------------------" << std::endl;
             SQLite::Statement query(db, "SELECT * FROM tool NATURAL JOIN product WHERE tool.product_id = " + std::to_string(item_id));
             while (query.executeStep())
             {
@@ -163,34 +130,17 @@ bool find_an_item(int item_id)
                 std::string col2 = query.getColumn(1);
                 std::string col3 = query.getColumn(2);
                 std::string col4 = query.getColumn(3);
-                std::string output = "|" + col1;
-                while (output.size() < 5)
-                {
-                    output += " ";
-                }
-                output += "|" + col2;
-                while (output.size() < 19)
-                {
-                    output += " ";
-                }
-                output += "|" + col3;
-                while (output.size() < 34)
-                {
-                    output += " ";
-                }
-                output += "|"+ col4;
-                while (output.size() < 44)
-                {
-                    output += " ";
-                }
-                output += "|";
+
+                std::vector<int> col_sizes = {5, 15, 17, 8};
+                std::vector<std::string> row_vec = {col1, col2, col3, col4};
+                std::string output = generate_table_row(row_vec, col_sizes);
                 std::cout << output << std::endl;
             }
         }
         else if (item_id <= 9)
         {
-            std::cout << "|ID  |Name      |Type       |Season   |Zone|Sunlight      |Water        |Humidity           |Price |" << std::endl
-            << "----------------------------------------------------------------------------------------------------" << std::endl;
+            std::cout << "|ID | Name        | Type        | Season   | Zone | Sunlight         | Water            | Humidity         | Price |" << std::endl
+            <<"--------------------------------------------------------------------------------------------------------------------" << std::endl;
             SQLite::Statement query(db, "SELECT * FROM seed NATURAL JOIN product WHERE seed.product_id = " + std::to_string(item_id));
             while (query.executeStep())
             {
@@ -203,52 +153,10 @@ bool find_an_item(int item_id)
                 std::string col7 = query.getColumn(6);
                 std::string col8 = query.getColumn(7);
                 std::string col9 = query.getColumn(8);
-                std::string output = "|"+ col1;
-                while (output.size() < 5)
-                {
-                    output += " ";
-                }
-                output += "|"+ col2;
-                while (output.size() < 16)
-                {
-                    output += " ";
-                }
-                output += "|" + col3;
-                while (output.size() < 28)
-                {
-                    output += " ";
-                }
-                output += "|" + col4;
-                while (output.size() < 38)
-                {
-                    output += " ";
-                }
-                output += "|" + col5;
-                while (output.size() < 43)
-                {
-                    output += " ";
-                }
-                output += "|" + col6;
-                while (output.size() < 58)
-                {
-                    output += " ";
-                }
-                output += "|" + col7;
-                while (output.size() < 72)
-                {
-                    output += " ";
-                }
-                output += "|" + col8;
-                while (output.size() < 92)
-                {
-                    output += " ";
-                }
-                output += "|" + col9;
-                while (output.size() < 99)
-                {
-                    output += " ";
-                }
-                output += "|";
+
+                std::vector<int> col_sizes = {5, 15, 15, 12, 8, 20, 20, 20, 7};
+                std::vector<std::string> row_vec = {col1, col2, col3, col4, col5, col6, col7, col8, col9};
+                std::string output = generate_table_row(row_vec, col_sizes);
                 std::cout << output << std::endl;
             }
         }
@@ -348,15 +256,21 @@ bool view_order(int order_id)
         + std::to_string(order_id);
     try
     {
-        std::cout << "Order " << std::to_string(order_id) << "Consists of " << std::endl;
+        std::cout << "Order " << std::to_string(order_id) << " Consists of " << std::endl
+        << "|ID | Quantity |" << std::endl
+        << "----------------" << std::endl;
         SQLite::Database db(get_db_filepath());
         SQLite::Statement view_order(db, query1);
         while(view_order.executeStep())
         {
             std::string product = view_order.getColumn(0);
             std::string quantity = view_order.getColumn(1);
-            std::string output = quantity + " " + product;
+            
+            std::vector<int> col_sizes = {5, 11};
+            std::vector<std::string> row_vec = {product, quantity};
+            std::string output = generate_table_row(row_vec, col_sizes);
             std::cout << output << std::endl;
+
         }
         return true;
     }
@@ -400,20 +314,25 @@ bool cancel_order(int order_id, int customer_id)
 bool checkout_order(int order_id)
 {
     std::string query1 = "SELECT sum(price * quantity_ordered) FROM product "
-        "NATURAL JOIN (SELECT product_id, quantity_orderd FROM prod_order WHERE order_id = " 
+        "NATURAL JOIN (SELECT product_id, quantity_ordered FROM prod_order WHERE order_id = " 
         + std::to_string(order_id) + ")";
-    std::string query2 = "UPDATE cust_order SET status = Completed WHERE order_id = " 
+    std::string query2 = "UPDATE cust_order SET status = \"Completed\" WHERE order_id = " 
         + std::to_string(order_id);
     try
     {
-        SQLite::Database db(get_db_filepath());
+        SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
         SQLite::Statement get_sum(db, query1);
-        std::string sum = std::to_string(get_sum.exec());
+        std::string sum1;
+        while(get_sum.executeStep())
+        {
+            std::string sum2 = get_sum.getColumn(0);
+            sum1 = sum2;
+        }
 
         SQLite::Statement checkout(db, query2);
         checkout.exec();
 
-        std::cout << "Checkout Complete: Your Order was $"+sum;
+        std::cout << "Checkout Complete!" << std::endl << "Your Order was $" + sum1 << std::endl;
         return true;
     }
     catch(const std::exception& e)
