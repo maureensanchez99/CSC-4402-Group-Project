@@ -129,7 +129,9 @@ void display_main_menu(int login_type)
             << "11] Add an employee" << std::endl
             << "12] Update an employee's information" << std::endl
             << "13] Update the details of an item" << std::endl
-            << "14] Update the details of an order" << std::endl;
+            << "14] Add a Customer" << std::endl
+            << "15] Remove a Customer" << std::endl
+            << "16] Update a Customer's information" << std::endl;
         }
         std::cout << std::endl << "0] Exit the program"
         << std::endl << generate_border() << std::endl;
@@ -406,22 +408,19 @@ void display_main_menu(int login_type)
                 action_success = update_item_info(item_type, cost, stock, item_name);
                 break;
             }
-            case 14: // Update the details of an order
+            case 14: // Add a Customer
             {
-                int order_id = get_int("Enter the order ID: ");
-                int customer_id = get_int("Enter the customer's ID: ");
-
-                std::cout << "Enter the customer's email address: ";
-                std::string email_address = get_input(true);
-
-                std::cout << "Enter the name of the item: ";
-                std::string item_name = get_input(true);
-
-                int item_amount = get_int("Enter the amount of items: ");
-
-                action_success = update_order_info(order_id, customer_id, 
-                    email_address, item_name, item_amount);
+                //remove_customer();
                 break;
+            }
+            case 15: // Remove a Customer
+            {
+                //add_customer();
+                break;
+            }
+            case 16: // Update Customer Info
+            {
+                //update_customer_info();
             }
             default: // Invalid input
             {

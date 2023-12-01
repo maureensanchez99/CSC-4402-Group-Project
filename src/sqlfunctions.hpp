@@ -463,18 +463,43 @@ bool update_item_info(std::string product_type, int cost,
 }
 
 /// @brief 
-/// @param order_id The ID of the order as an integer
 /// @param customer_id The ID of the customer as an integer
-/// @param email The email of the customer as a string
-/// @param product_name The name of the item as a string
-/// @param quantity The quantity of the order as an integer
+/// @param first_name The first name of the customer as a string
+/// @param last_name The last name of the customer as a string
+/// @param address The address of the customer as a string
+/// @param is_member The membership status of the customer as a boolean
 /// @return A bool representing the success of the function
-bool update_order_info(int order_id, int customer_id, 
-    std::string email, std::string product_name, int quantity)
+bool add_customer(int customer_id, std::string first_name, std::string last_name, std::string address, bool is_member)
 {
     // implement here
 
     return false;
 }
+
+/// @brief 
+/// @param customer_id The ID of the customer as an integer
+/// @param first_name The first name of the customer as a string
+/// @param last_name The last name of the customer as a string
+/// @param address The address of the customer as a string
+/// @param is_member The membership status of the customer as a boolean
+/// @return A bool representing the success of the function
+bool update_customer_info(int customer_id, std::string first_name, std::string last_name, std::string address, bool is_member)
+{
+    // implement here
+
+    return false;
+}
+
+/// @brief 
+/// @param order_id The ID of the customer as an integer
+/// @return A bool representing the success of the function
+bool remove_customer(int customer_id)
+{
+    // implement here
+
+    return false;
+}
+
+
 
 #endif
