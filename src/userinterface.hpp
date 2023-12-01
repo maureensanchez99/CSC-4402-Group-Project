@@ -131,7 +131,7 @@ void display_main_menu(int login_type)
             << "13] Remove a customer" << std::endl
             << "14] Add a customer" << std::endl
             << "15] Update a customer's information" << std::endl
-            << "16] Update the details of an item" << std::endl;
+            << "16] Update an item's stock and cost" << std::endl;
         }
         std::cout << std::endl << "0] Exit the program"
         << std::endl << generate_border() << std::endl;
@@ -597,18 +597,13 @@ void display_main_menu(int login_type)
                     is_member, fall_triggered);
                 break;
             }
-            case 16: // Update the details of an item
+            case 16: // Update an item's stock and cost
             {
-                std::cout << "Enter the item's type: ";
-                std::string item_type = get_input(true);
-
+                int item_id = get_int("Enter the ID of the item: ");
                 int cost = get_int("Enter the new cost of the item: ");
                 int stock = get_int("Enter the new amount of stock: ");
-                
-                std::cout << "Enter the name of the item: ";
-                std::string item_name = get_input(true);
 
-                action_success = update_item_info(item_type, cost, stock, item_name);
+                action_success = update_item_info(item_id, cost, stock);
                 break;
             }
             default: // Invalid input

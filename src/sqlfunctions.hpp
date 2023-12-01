@@ -562,17 +562,26 @@ bool update_customer_info(int customer_id, std::pair<std::string, std::string> n
     return false;
 }
 
-/// @brief Updates the information of an item in the database
-/// @param product_type The type of the item as a string
-/// @param cost The cost of the item as an integer
-/// @param stock_amount The stock of the item as an integer
-/// @param product_name The name of the item as a string
+/// @brief Updates the stock and the cost of an item
+/// @param item_id The ID of the item as an integer
+/// @param new_cost The new cost of the item as an integer
+/// @param new_stock The new stock of the item as an integer
 /// @return A bool representing the success of the function
-bool update_item_info(std::string product_type, int cost, 
-    int stock_amount, std::string product_name)
+bool update_item_info(int item_id, int new_cost, int new_stock)
 {
-    // implement here
-
+    try // Running the query
+    {
+        SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
+        db.exec("UPDATE product SET price = " + std::to_string(new_cost)
+            + " WHERE product_id = " + std::to_string(item_id)); // Updating cost
+        db.exec("UPDATE store_product SET quantity = " + std::to_string(new_stock) 
+            + " WHERE product_id = " + std::to_string(item_id)); // Updating stock
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
     return false;
 }
 
