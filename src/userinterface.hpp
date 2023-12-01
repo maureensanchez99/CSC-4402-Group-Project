@@ -291,11 +291,9 @@ void display_main_menu(int login_type)
             case 12: // Update an employee's information
             {
                 int employee_id;
-                std::string name;
                 std::string address;
-                int hours;
-                int wage;
                 bool is_manager;
+                bool fall_triggered = false;
 
                 if (!fall_trigger) // If the user is trying to update info
                 {
@@ -334,6 +332,7 @@ void display_main_menu(int login_type)
                             invalid_msg("input, the ID must be an integer value");
                             continue;
                         }
+                        fall_triggered = fall_trigger; // Store the the fall through
                         fall_trigger = false; // Reset fall_trigger to false
                         break;
                     }
@@ -345,7 +344,7 @@ void display_main_menu(int login_type)
                 }
 
                 std::cout << "Enter the employee's new name: ";
-                name = get_input(true);
+                std::string name = get_input(true);
                 
                 while (true)
                 {
@@ -365,8 +364,8 @@ void display_main_menu(int login_type)
                     }
                 }
 
-                hours = get_int("Enter the employee's new hours: ");
-                wage = get_int("Enter the employee's new wage: ");
+                int hours = get_int("Enter the employee's new hours: ");
+                int wage = get_int("Enter the employee's new wage: ");
                 
                 while (true)
                 {
@@ -391,7 +390,7 @@ void display_main_menu(int login_type)
                 }
 
                 action_success = update_employee_info(employee_id, name, address, 
-                    hours, wage, is_manager);
+                    hours, wage, is_manager, fall_triggered);
                 break;
             }
             case 13: // Update the details of an item

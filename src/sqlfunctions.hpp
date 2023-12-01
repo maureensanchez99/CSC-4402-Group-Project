@@ -439,12 +439,34 @@ bool remove_employee(int employee_id)
 /// @param hours The employee's hours as an integer
 /// @param wage The wage of the employee as an integer
 /// @param is_manager The status of the employee as a bool
+/// @param store_id The ID of the employee's store as an integer
+/// @param is_new Showing if the employee should be added or modified as a bool
 /// @return A bool representing the success of the function
 bool update_employee_info(int employee_id, std::string name, std::string address, 
-    int hours, int wage, bool is_manager)
+    int hours, int wage, bool is_manager, bool is_new)
 {
-    // implement here
-
+    try
+    {
+        SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
+        if (is_new)
+        {
+            /* TODO: split name, split address, convert manager into logical 0 or 1, and ask for the employee's branch number
+            db.exec("INSERT INTO employee VALUES ('" + std::to_string(employee_id) + "', '" 
+                + name + "', '" + name + "', '" + address + "', '" + address + "', '" 
+                + address + "', '" + address + "', '" + address + "', '" + address + "', '" 
+                + hours + "', '" + wage + "', '" + manager + "', '" + store_id + "')");
+            */
+        }
+        else
+        {
+            // to be added
+        }
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
     return false;
 }
 
