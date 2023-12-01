@@ -12,16 +12,18 @@ std::string get_db_filepath()
         "database/plant_store.db";
 }
 
-/// @brief Generates a border of a set length out of '='
+/// @brief Generates a border of a set length and design
 /// \param length The length of the border to be 
 /// generated; this value is set to 100 by default
+/// \param design The design of the border to be 
+/// generated; this value is set to '=' by default
 /// @return A string containing the finished border
-std::string generate_border(int length = 100)
+std::string generate_border(int length = 100, char design = '=')
 {
     std::string border;
     for (int i = 0; i < length; ++i)
     {
-        border += '=';
+        border += design;
     }
     return border;
 }
