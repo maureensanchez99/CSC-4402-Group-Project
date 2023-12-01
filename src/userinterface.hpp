@@ -6,6 +6,8 @@
 /// (or an empty pair for exiting the program)
 std::pair<int, int> display_login_menu()
 {
+    using namespace std::chrono_literals; // used for sleep
+
     std::pair<int, int> return_val;
     std::pair<bool, std::string> lookup_return;
     std::string input = std::string();
@@ -38,7 +40,7 @@ std::pair<int, int> display_login_menu()
         }
     }
 
-    sleep(1); // Used to make the text more readable
+    std::this_thread::sleep_for(1s); // Used to make the text more readable
     std::cout << "To login, enter your ID number." << std::endl
     << "To quit, type exit." << std::endl << generate_border() << std::endl;
 
@@ -93,7 +95,7 @@ std::pair<int, int> display_login_menu()
             }
 
             std::cout << generate_border() << std::endl;
-            sleep(1); // Used to make the text more readable
+            std::this_thread::sleep_for(1s); // Used to make the text more readable
 
             return return_val;
         }
@@ -104,6 +106,8 @@ std::pair<int, int> display_login_menu()
 /// @param login_type An integer value representing the type of user accessing the menu
 void display_main_menu(int login_type)
 {
+    using namespace std::chrono_literals; // used for sleep
+
     int input;
     bool loop_active = true;
     bool action_success = false;
@@ -154,7 +158,7 @@ void display_main_menu(int login_type)
             case 1: // View all items
             {
                 action_success = view_available_items();
-                sleep(2); // Let the user view the info
+                std::this_thread::sleep_for(2s); // Let the user view the info
                 break;
             }
             case 2: // Find a specific item
@@ -162,7 +166,7 @@ void display_main_menu(int login_type)
                 int product_id = get_int("Enter the item ID: ");
 
                 action_success = find_an_item(product_id);
-                sleep(2); // Let the user view the info
+                std::this_thread::sleep_for(2s); // Let the user view the info
                 break;
             }
             case 3: // Add item to current order
@@ -211,7 +215,7 @@ void display_main_menu(int login_type)
                 int order_id = get_int("Enter the order ID: ");
 
                 action_success = view_order(order_id);
-                sleep(2); // Let the user view the info
+                std::this_thread::sleep_for(2s); // Let the user view the info
                 break;
             }
             case 6: // Cancel current order
@@ -250,13 +254,13 @@ void display_main_menu(int login_type)
             case 8: // View all orders
             {
                 action_success = view_all_orders();
-                sleep(2); // Let the user view the info
+                std::this_thread::sleep_for(2s); // Let the user view the info
                 break;
             }
             case 9: // View all employees' info
             {
                 action_success = view_all_employees();
-                sleep(2); // Let the user view the info
+                std::this_thread::sleep_for(2s); // Let the user view the info
                 break;
             }
             case 10: // Remove an employee
@@ -626,7 +630,7 @@ void display_main_menu(int login_type)
             }
             std::cout << "Now returning to main menu."
             << std::endl << generate_border() << std::endl;
-            sleep(2);
+            std::this_thread::sleep_for(2s);
         }
         else // If the loop will end, output an exit message
         {
