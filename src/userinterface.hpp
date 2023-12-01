@@ -128,10 +128,10 @@ void display_main_menu(int login_type)
             << "10] Remove an employee" << std::endl
             << "11] Add an employee" << std::endl
             << "12] Update an employee's information" << std::endl
-            << "13] Update the details of an item" << std::endl
-            << "14] Add a Customer" << std::endl
-            << "15] Remove a Customer" << std::endl
-            << "16] Update a Customer's information" << std::endl;
+            << "13] Remove a customer" << std::endl
+            << "14] Add a customer" << std::endl
+            << "15] Update a customer's information" << std::endl
+            << "16] Update the details of an item" << std::endl;
         }
         std::cout << std::endl << "0] Exit the program"
         << std::endl << generate_border() << std::endl;
@@ -291,37 +291,28 @@ void display_main_menu(int login_type)
             case 12: // Update an employee's information
             {
                 int employee_id;
-                std::string address;
+                std::pair<std::string, std::string> name;
+                std::vector<std::string> address;
                 bool is_manager;
                 bool fall_triggered = false;
 
-                if (!fall_trigger) // If the user is trying to update info
+                while (true) // Set the employee's ID
                 {
-                    while (true)
-                    {
-                        std::cout << "Enter the employee's ID: ";
-                        std::string employee_id_str = get_input(true);
-
-                        std::pair<bool, std::string> check_return = check_id(true, employee_id_str);
-                        if (!(check_return.second).empty())
-                        {
-                            employee_id = std::stoi(employee_id_str);
-                            break;
-                        }
-                        else
-                        {
-                            invalid_msg("ID");
-                            continue;
-                        }
-                    }
-                }
-                else // If the user is trying to add a new employee
-                {
-                    std::cout << "Enter the employee's new ID: ";
+                    std::cout << "Enter the employee's ID: ";
                     std::string employee_id_str = get_input(true);
-
                     std::pair<bool, std::string> check_return = check_id(true, employee_id_str);
-                    if ((check_return.second).empty())
+                    
+                    if (!(check_return.second).empty() && !fall_trigger)
+                    {
+                        employee_id = std::stoi(employee_id_str);
+                        break;
+                    }
+                    else if (!fall_trigger)
+                    {
+                        invalid_msg("ID");
+                        continue;
+                    }
+                    else if ((check_return.second).empty() && fall_trigger)
                     {
                         try
                         {
@@ -343,31 +334,77 @@ void display_main_menu(int login_type)
                     }
                 }
 
-                std::cout << "Enter the employee's new name: ";
-                std::string name = get_input(true);
-                
-                while (true)
+                while (true) // Set the employee's name
                 {
-                    std::cout << "Enter the employee's new address in the format "
-                    "[street_num street_name apt_num(optional) city state zipcode]: ";
-                    address = get_input(true);
+                    std::cout << "Enter the employee's new name (first & last): ";
+                    std::string name_as_str = get_input(true);
+                    std::vector<std::string> name_as_vec = word_breaker(name_as_str);
 
-                    int temp_int = word_breaker(address).size();
-                    if (temp_int == 5 || temp_int == 6)
+                    if (name_as_vec.size() == 2) // Assign first & last name to the pair
                     {
+                        name.first = name_as_vec.at(0);
+                        name.second = name_as_vec.at(1);
                         break;
                     }        
                     else 
                     {
+                        name_as_vec.clear();
+                        invalid_msg("format, the name must be two words");
+                        continue;
+                    }
+                }
+                
+                while (true) // Set the employee's address
+                {
+                    std::cout << "Enter the employee's new address in the format "
+                    "[street_num street_name apt_num(optional) city state zipcode]: ";
+                    std::string address_as_str = get_input(true);
+                    address = word_breaker(address_as_str);
+
+                    if (address.size() == 5) // Verify the integers in the address
+                    {
+                        try // Try to convert the strings to ints
+                        {
+                            std::stoi(address.at(0));
+                            std::stoi(address.at(5));
+                        }
+                        catch(const std::exception& e)
+                        {
+                            address.clear();
+                            invalid_msg("street_num and/or zipcode; they should be numbers");
+                            continue;
+                        }
+                        break; // If stoi() doesn't fail, break out of the loop
+                    }
+                    else if (address.size() == 6) // Same as above but with `apt_num` included
+                    {
+                        try
+                        {
+                            std::stoi(address.at(0));
+                            std::stoi(address.at(2));
+                            std::stoi(address.at(5));
+                        }
+                        catch(const std::exception& e)
+                        {
+                            address.clear();
+                            invalid_msg("street_num, apt_num, and/or zipcode; they should be numbers");
+                            continue;
+                        }
+                        break;
+                    }        
+                    else 
+                    {
+                        address.clear();
                         invalid_msg("format");
                         continue;
                     }
                 }
 
                 int hours = get_int("Enter the employee's new hours: ");
-                int wage = get_int("Enter the employee's new wage: ");
+                int wage = get_int("Enter the employee's new wage (as a whole number): ");
+                int store_id = get_int("Enter the ID of the employee's store: ");
                 
-                while (true)
+                while (true) // Check if the employee is to be a manager or not
                 {
                     std::cout << "Will the employee be a manager? (Y/N): ";
                     std::string is_manager_str = get_input(true);
@@ -390,10 +427,177 @@ void display_main_menu(int login_type)
                 }
 
                 action_success = update_employee_info(employee_id, name, address, 
-                    hours, wage, is_manager, fall_triggered);
+                    hours, wage, store_id, is_manager, fall_triggered);
                 break;
             }
-            case 13: // Update the details of an item
+            case 13: // Remove a customer
+            {
+                int customer_id;
+
+                while (true) // Check the validity of the customer ID
+                {
+                    std::cout << "Enter the customer's ID: ";
+                    std::string customer_id_str = get_input(true);
+
+                    std::pair<bool, std::string> check_return = check_id(false, customer_id_str);
+                    if (!(check_return.second).empty())
+                    {
+                        customer_id = std::stoi(customer_id_str);
+                        break;
+                    }
+                    else
+                    {
+                        invalid_msg("ID");
+                        continue;
+                    }
+                }
+
+                action_success = remove_customer(customer_id);
+                break;
+            }
+            case 14: // Add a customer
+            {
+                fall_trigger = true; // Fall through to next case (behavior is shared)
+            }
+            case 15: // Update a customer's info
+            {
+                int customer_id;
+                std::pair<std::string, std::string> name;
+                std::vector<std::string> address;
+                bool is_member;
+                bool fall_triggered = false;
+
+                while (true) // Set the customer's ID
+                {
+                    std::cout << "Enter the customer's ID: ";
+                    std::string customer_id_str = get_input(true);
+                    std::pair<bool, std::string> check_return = check_id(false, customer_id_str);
+                    
+                    if (!(check_return.second).empty() && !fall_trigger)
+                    {
+                        customer_id = std::stoi(customer_id_str);
+                        break;
+                    }
+                    else if (!fall_trigger)
+                    {
+                        invalid_msg("ID");
+                        continue;
+                    }
+                    else if ((check_return.second).empty() && fall_trigger)
+                    {
+                        try
+                        {
+                            customer_id = std::stoi(customer_id_str);
+                        }
+                        catch(const std::exception& e)
+                        {
+                            invalid_msg("input, the ID must be an integer value");
+                            continue;
+                        }
+                        fall_triggered = fall_trigger; // Store the the fall through
+                        fall_trigger = false; // Reset fall_trigger to false
+                        break;
+                    }
+                    else
+                    {
+                        invalid_msg("input, this ID has already been taken");
+                        continue;
+                    }
+                }
+
+                while (true) // Set the customer's name
+                {
+                    std::cout << "Enter the customer's new name (first & last): ";
+                    std::string name_as_str = get_input(true);
+                    std::vector<std::string> name_as_vec = word_breaker(name_as_str);
+
+                    if (name_as_vec.size() == 2) // Assign first & last name to the pair
+                    {
+                        name.first = name_as_vec.at(0);
+                        name.second = name_as_vec.at(1);
+                        break;
+                    }        
+                    else 
+                    {
+                        name_as_vec.clear();
+                        invalid_msg("format, the name must be two words");
+                        continue;
+                    }
+                }
+                
+                while (true) // Set the customer's address
+                {
+                    std::cout << "Enter the customer's new address in the format "
+                    "[street_num street_name apt_num(optional) city state zipcode]: ";
+                    std::string address_as_str = get_input(true);
+                    address = word_breaker(address_as_str);
+
+                    if (address.size() == 5) // Verify the integers in the address
+                    {
+                        try // Try to convert the strings to ints
+                        {
+                            std::stoi(address.at(0));
+                            std::stoi(address.at(5));
+                        }
+                        catch(const std::exception& e)
+                        {
+                            address.clear();
+                            invalid_msg("street_num and/or zipcode; they should be numbers");
+                            continue;
+                        }
+                        break; // If stoi() doesn't fail, break out of the loop
+                    }
+                    else if (address.size() == 6) // Same as above but with `apt_num` included
+                    {
+                        try
+                        {
+                            std::stoi(address.at(0));
+                            std::stoi(address.at(2));
+                            std::stoi(address.at(5));
+                        }
+                        catch(const std::exception& e)
+                        {
+                            address.clear();
+                            invalid_msg("street_num, apt_num, and/or zipcode; they should be numbers");
+                            continue;
+                        }
+                        break;
+                    }        
+                    else 
+                    {
+                        address.clear();
+                        invalid_msg("format");
+                        continue;
+                    }
+                }
+                
+                while (true) // Check if the customer is a member of the store
+                {
+                    std::cout << "Is the customer a store member? (Y/N): ";
+                    std::string is_member_str = get_input(true);
+
+                    if (is_member_str == "Y" || is_member_str == "y") 
+                    {
+                        is_member = true;
+                        break;
+                    }
+                    else if (is_member_str == "n" || is_member_str == "n") 
+                    {
+                        is_member = false;
+                        break;
+                    }
+                    else 
+                    {
+                        invalid_msg();
+                        continue;
+                    }
+                }
+
+                action_success = update_customer_info(customer_id, name, address, 
+                    is_member, fall_triggered);
+                break;
+            }
+            case 16: // Update the details of an item
             {
                 std::cout << "Enter the item's type: ";
                 std::string item_type = get_input(true);
@@ -406,20 +610,6 @@ void display_main_menu(int login_type)
 
                 action_success = update_item_info(item_type, cost, stock, item_name);
                 break;
-            }
-            case 14: // Add a Customer
-            {
-                //remove_customer();
-                break;
-            }
-            case 15: // Remove a Customer
-            {
-                //add_customer();
-                break;
-            }
-            case 16: // Update Customer Info
-            {
-                //update_customer_info();
             }
             default: // Invalid input
             {

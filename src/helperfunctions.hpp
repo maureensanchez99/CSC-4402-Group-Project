@@ -182,9 +182,9 @@ int get_int(std::string prompt,
     return new_int;
 }
 
-/// @brief Formats SQL table output into correct string format
-/// @param items A vector of strings containg each item in all columns for a row
-/// @return Returns a vector of strings in the format of a table
+/// @brief Formats SQL table output into a string for terminal use
+/// @param items A vector of strings containg every item in a row
+/// @return Returns a row of an SQL table as a string
 std::string generate_table_row(std::vector<std::string> items, std::vector<int> column_sizes)
 {
     if (column_sizes.size() != items.size())

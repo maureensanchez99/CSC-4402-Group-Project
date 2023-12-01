@@ -344,7 +344,7 @@ bool checkout_order(int order_id)
 
 // Admin functions
 
-/// @brief 
+/// @brief Returns a table of all orders stored in the database
 /// @return A bool representing the success of the function
 bool view_all_orders()
 {
@@ -380,7 +380,7 @@ bool view_all_orders()
     return false;
 }
 
-/// @brief 
+/// @brief Returns a table of all employees stored in the database
 /// @return A bool representing the success of the function
 bool view_all_employees()
 {
@@ -414,7 +414,7 @@ bool view_all_employees()
     return false;
 }
 
-/// @brief 
+/// @brief Attempt to remove an employee from the database
 /// @param employee_id The ID of the employee as an integer
 /// @return A bool representing the success of the function
 bool remove_employee(int employee_id)
@@ -434,28 +434,42 @@ bool remove_employee(int employee_id)
 
 /// @brief Updates an employee's info or adds a new employee if they don't exist
 /// @param employee_id The ID of the employee as an integer
-/// @param name The name of the employee as a string
-/// @param address The address of the employee as a string
+/// @param name The name of the employee as a pair of strings
+/// @param address The address of the employee as a vector of strings
 /// @param hours The employee's hours as an integer
 /// @param wage The wage of the employee as an integer
-/// @param is_manager The status of the employee as a bool
 /// @param store_id The ID of the employee's store as an integer
+/// @param is_manager The status of the employee as a bool
 /// @param is_new Showing if the employee should be added or modified as a bool
 /// @return A bool representing the success of the function
-bool update_employee_info(int employee_id, std::string name, std::string address, 
-    int hours, int wage, bool is_manager, bool is_new)
+bool update_employee_info(int employee_id, std::pair<std::string, std::string> name, 
+    std::vector<std::string> address, int hours, int wage, int store_id, 
+    bool is_manager, bool is_new)
 {
-    try
+    std::string manager;
+    if (is_manager) // Converting manager bool to an int
+    {
+        manager = "1";
+    }
+    else
+    {
+        manager = "0";
+    }
+
+    if (address.size() == 5) // Make sure there's a value to insert for the apt value
+    {
+        // address.insert();
+    }
+
+    try // Running the query
     {
         SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
         if (is_new)
         {
-            /* TODO: split name, split address, convert manager into logical 0 or 1, and ask for the employee's branch number
             db.exec("INSERT INTO employee VALUES ('" + std::to_string(employee_id) + "', '" 
-                + name + "', '" + name + "', '" + address + "', '" + address + "', '" 
-                + address + "', '" + address + "', '" + address + "', '" + address + "', '" 
-                + hours + "', '" + wage + "', '" + manager + "', '" + store_id + "')");
-            */
+                + name.first + "', '" + name.second + "', '" + address.at(0) + "', '" + address.at(1) + "', '" 
+                + address.at(2) + "', '" + address.at(3) + "', '" + address.at(4) + "', '" + address.at(5) + "', '" 
+                + std::to_string(hours) + "', '" + std::to_string(wage) + "', '" + manager + "', '" + std::to_string(store_id) + "')");
         }
         else
         {
@@ -470,7 +484,40 @@ bool update_employee_info(int employee_id, std::string name, std::string address
     return false;
 }
 
-/// @brief 
+/// @brief Attempt to remove a customer from the database
+/// @param customer_id The ID of the customer as an integer
+/// @return A bool representing the success of the function
+bool remove_customer(int customer_id)
+{
+    try
+    {
+        SQLite::Database db(get_db_filepath(), SQLite::OPEN_READWRITE);
+        db.exec("DELETE FROM customer WHERE customer_id = " + std::to_string(customer_id));
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "SQL failure: " << e.what() << std::endl;
+    }
+    return false;
+}
+
+/// @brief Updates a customer's info or adds a new customer if they don't exist
+/// @param customer_id The ID of the customer as an integer
+/// @param name The name of the customer as a pair of strings
+/// @param address The address of the customer as a vector of strings
+/// @param is_member The membership status of the customer as a bool
+/// @param is_new Showing if the customer should be added or modified as a bool
+/// @return A bool representing the success of the function
+bool update_customer_info(int customer_id, std::pair<std::string, std::string> name, 
+    std::vector<std::string> address, bool is_member, bool is_new)
+{
+    // implement here
+
+    return false;
+}
+
+/// @brief Updates the information of an item in the database
 /// @param product_type The type of the item as a string
 /// @param cost The cost of the item as an integer
 /// @param stock_amount The stock of the item as an integer
@@ -483,45 +530,5 @@ bool update_item_info(std::string product_type, int cost,
 
     return false;
 }
-
-/// @brief 
-/// @param customer_id The ID of the customer as an integer
-/// @param first_name The first name of the customer as a string
-/// @param last_name The last name of the customer as a string
-/// @param address The address of the customer as a string
-/// @param is_member The membership status of the customer as a boolean
-/// @return A bool representing the success of the function
-bool add_customer(int customer_id, std::string first_name, std::string last_name, std::string address, bool is_member)
-{
-    // implement here
-
-    return false;
-}
-
-/// @brief 
-/// @param customer_id The ID of the customer as an integer
-/// @param first_name The first name of the customer as a string
-/// @param last_name The last name of the customer as a string
-/// @param address The address of the customer as a string
-/// @param is_member The membership status of the customer as a boolean
-/// @return A bool representing the success of the function
-bool update_customer_info(int customer_id, std::string first_name, std::string last_name, std::string address, bool is_member)
-{
-    // implement here
-
-    return false;
-}
-
-/// @brief 
-/// @param order_id The ID of the customer as an integer
-/// @return A bool representing the success of the function
-bool remove_customer(int customer_id)
-{
-    // implement here
-
-    return false;
-}
-
-
 
 #endif
